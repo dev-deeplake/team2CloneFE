@@ -5,9 +5,19 @@ import * as layout from "../styles/layouts"
 
 function Layout() {
   const email = "dummy@gmail.com" // 추후 redux store에서 빼서 쓰기
+  const hexValues = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "A", "B", "C", "D", "E"] // F는 흐린 계열이 나오지 않게 하기 위해 제외
+  const getHex = () => {
+      let hex = "#"
+      for (let i = 0; i < 6; i++) {
+          const index = Math.floor(Math.random() * hexValues.length)
+          hex += hexValues[index]
+      }
+      return hex
+  }
+  const userHex = getHex();
   return (
     <layout.Flex100>
-      <Nav email={email}/>
+      <Nav email={email} hex={userHex}/>
       <Main />
     </layout.Flex100>
   )
