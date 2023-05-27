@@ -2,8 +2,10 @@
 export const darkSide = `rgba(31, 33, 35, 1)`;
 export const darkLightened = `rgba(53, 54, 65, 1)`;
 
-export const bgMyColor = `rgba(255, 255, 255, 1)`;
 export const bgReplColor = `rgba(247, 247, 247, 1)`;
+export const white100 = `rgba(255, 255, 255, 1)`;
+export const white80 = `rgba(255, 255, 255, 0.8)`;
+export const white60 = `rgba(255, 255, 255, 0.6)`;
 
 export const black100 = `rgba(0, 0, 0, 1)`;
 export const black90 = `rgba(0, 0, 0, 0.9)`;
