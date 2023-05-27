@@ -1,0 +1,37 @@
+
+import styled from "styled-components";
+
+export const Flex = styled.div`
+    display: flex;
+`
+
+export const Flex100 = styled(Flex)`
+    width: 100%;
+`
+
+export const FlexColumn = styled(Flex)`
+    flex-direction: column;
+`
+
+export const FlexColumn100 = styled(FlexColumn)`
+    width: 100%;
+`
+
+export const FlexCenter = styled(Flex)`
+    align-content: center;
+    justify-content: center;
+`
+
+export const FlexCenter100 = styled(Flex100)`
+    align-items: center;
+    justify-content: center;
+`
+export const FlexColumnCenter = styled(FlexColumn)`
+    align-items: center;
+    justify-content: center;
+`
+
+export const FlexColumnCenter100 = styled(FlexColumn100)`
+    align-items: center;
+    justify-content: center;
+`
