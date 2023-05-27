@@ -8,7 +8,7 @@ function GreenBtn({size="small", children}) {
     padding: 8px 12px;
     background-color: ${sVar.loginHLColor90};
     border-radius: 4px;
-    color: ${sVar.bgMyColor};
+    color: ${sVar.white100};
     border: 1px solid ${sVar.loginHLColor100};
     margin: 10px 5px 10px 5px;
     font-weight: 100;
