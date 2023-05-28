@@ -22,6 +22,14 @@ export const FlexCenter = styled(Flex)`
     justify-content: center;
 `
 
+export const FlexCenterRow = styled(Flex)`
+    align-items: center;
+`
+
+export const FlexCenterRow100 = styled(Flex100)`
+    align-items: center;
+`
+
 export const FlexCenter100 = styled(Flex100)`
     align-items: center;
     justify-content: center;

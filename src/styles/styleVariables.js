@@ -8,6 +8,7 @@ export const bgReplColor = `rgba(247, 247, 247, 1)`;
 export const white100 = `rgba(251, 251, 255, 1)`;
 export const white90 = `rgba(251, 251, 255, 0.9)`;
 export const white80 = `rgba(251, 251, 255, 0.8)`;
+export const white70 = `rgba(251, 251, 255, 0.7)`;
 export const white60 = `rgba(251, 251, 255, 0.6)`;
 export const white20 = `rgba(251, 251, 255, 0.2)`;
 export const white10 = `rgba(251, 251, 255, 0.1)`;

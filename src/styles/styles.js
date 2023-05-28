@@ -41,7 +41,11 @@ export const IconUsingBtn = styled.button`
   }
   display: flex;
   align-items: center;
-  
+  > div {
+    color: ${sVar.white90};
+    line-height: 1.25rem;
+    font-size: 0.875rem;
+  }
 `;
 // main 화면에서 GPT 모델 노출 부분의 스타일링
 export const MainHeader = styled(layout.FlexCenter100)`
