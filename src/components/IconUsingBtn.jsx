@@ -9,8 +9,10 @@ function IconUsingBtn({children, customStyle, onClickHandler, iconFront=false, i
     <style.IconUsingBtn style={customStyle} onClick={onClickHandler}>
         {!!iconFront && (iconFront)}
         {children}
-        {!!iconTailOne && (iconTailOne)}
-        {!!iconTailTwo && (iconTailTwo)}
+        <layout.FlexCenter100 style={{width: "50px", position: "fixed", left: "195px"}}>
+          {!!iconTailOne && (iconTailOne)}
+          {!!iconTailTwo && (iconTailTwo)}
+        </layout.FlexCenter100>
     </style.IconUsingBtn>
   )
 }

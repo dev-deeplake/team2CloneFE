@@ -6,6 +6,9 @@ import * as style from "../styles/styles"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // + 아이콘의 경우 FontAwesome에서 불러옴, 불러오기 위한 import
 import { faPlus } from '@fortawesome/free-solid-svg-icons'; // + 아이콘의 경우 FontAwesome에서 불러옴
 import { ReactComponent as Chat } from "../icons/wordBalloon.svg"
+import { ReactComponent as Modify } from "../icons/modify.svg"
+import { ReactComponent as Delete } from "../icons/delete.svg"
+import { ReactComponent as Dots } from "../icons/dots.svg"
 import UserIcon from './UserIcon'
 
 // email => redux 설정
@@ -46,13 +49,25 @@ function Nav({email, hex}) {
           return (
             <layout.FlexColumnCenter style={{alignItems: "flex-start"}}>
               <style.GroupText>{group}</style.GroupText>
-              {dummies["data"][group].map(entry => <IconUsingBtn iconFront={<Chat style={{transform: "scaleX(-1)", marginRight: "10px"}}/>} key={entry["chatId"]}>{entry["chatName"]}</IconUsingBtn>)}
+              {dummies["data"][group].map(
+                entry => <IconUsingBtn
+                            iconFront={<Chat style={{transform: "scaleX(-1)", marginRight: "10px"}}/>}
+                            iconTailOne={<Modify style={{marginRight: "5px"}} />}
+                            iconTailTwo={<Delete />}
+                            key={entry["chatId"]}>
+                              {entry["chatName"]}
+                          </IconUsingBtn>)}
             </layout.FlexColumnCenter>
           )
         })
       }
       <layout.FlexCenter style={{position: "fixed", bottom: "0", width: "252px", paddingTop: "4px", borderTop: `1px solid ${sVar.white20}`}}>
-        <IconUsingBtn customStyle={{marginBottom: "8px"}} iconFront={<UserIcon email={email} hex={hex}/>}>{email}</IconUsingBtn> {/* user 프로필 버튼, 하단 고정  */}
+        <IconUsingBtn customStyle={{marginBottom: "8px"}}
+                      iconFront={<UserIcon email={email} hex={hex} />}
+                      iconTailOne={<div style={{width: "20px"}}></div>}
+                      iconTailTwo={<Dots />}>
+          {email}
+        </IconUsingBtn> {/* user 프로필 버튼, 하단 고정  */}
       </layout.FlexCenter>
       
     </style.NavContainer>
