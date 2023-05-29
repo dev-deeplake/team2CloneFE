@@ -6,17 +6,16 @@ import { ReactComponent as Logo } from "../icons/logo.svg";
 import NameFloatInput from "../components/NameFloatInput";
 import LoginHeader from "../components/LoginHeader";
 import { useMutation } from "react-query";
-import { signUp } from "../api/signUp";
-import { useCookies } from "react-cookie";
+import { signUp } from "../api/userAPI";
 import { useSelector, useDispatch } from "react-redux";
 import { setUserInfo } from "../redux/modules/userInfo";
 import GreenBtn from "../components/GreenBtn";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function SignUp() {
-  const [cookies, setCookie] = useCookies(["accessToken"]);
   const userInfo = useSelector((state) => state.userInfo);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   // 이메일이 올바르게 입력되면 true로 세팅됨
   const [isEmailInsert, setIsEmailInsert] = useState(false);
 
@@ -25,7 +24,8 @@ function SignUp() {
     {
       onSuccess: async (res) => {
         console.log(res);
-        setCookie("accessToken", res.data.accessToken, { path: "/" });
+        alert("성공적으로 회원가입되었습니다..");
+        navigate("/login");
       },
     }
   );

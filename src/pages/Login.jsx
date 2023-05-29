@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as layout from "../styles/layouts";
 import * as style from "../styles/styles";
 import * as sVar from "../styles/styleVariables";
@@ -8,12 +8,29 @@ import LoginHeader from "../components/LoginHeader";
 import GreenBtn from "../components/GreenBtn";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserInfo } from "../redux/modules/userInfo";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useMutation } from "react-query";
+import { useCookies } from "react-cookie";
+import { login, logout } from "../api/userAPI";
 
 function Login() {
   const userInfo = useSelector((state) => state.userInfo);
   const dispatch = useDispatch();
   const [isEmailInsert, setIsEmailInsert] = useState(false);
+  const [cookies, setCookie] = useCookies(["Authorization"]);
+  const navigate = useNavigate();
+
+  const { mutateAsync: loginMutation } = useMutation(
+    (userInfo) => login(userInfo),
+    {
+      onSuccess: async (res) => {
+        console.log(res);
+        setCookie("Authorization", res.data["token"], { path: "/" });
+        alert(res.data["message"]);
+        navigate("/layout");
+      },
+    }
+  );
 
   const changeHandler = ({ target }) => {
     const { name, value } = target;
@@ -39,9 +56,14 @@ function Login() {
     setIsEmailInsert(true);
     // pw 값 존재 시 회원가입 HTTP통신 진행
     if (userInfo.password.length !== 0) {
-      console.log("login되었습니다.");
+      loginMutation(userInfo);
     }
   };
+
+  useEffect(() => {
+    console.log(cookies);
+  }, [cookies]);
+
   return (
     <layout.FlexColumnCenter>
       <layout.FlexCenter100 style={{ paddingTop: "32px" }}>
