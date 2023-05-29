@@ -15,7 +15,7 @@ function MainTextInput() {
         const countLines = () => {
             if(textAreaRef.current) {
                 const lineHeight = parseInt(getComputedStyle(textAreaRef.current)["line-height"], 10)
-                console.log(lineHeight)
+                // console.log(lineHeight)
             }
         }
         countLines()
