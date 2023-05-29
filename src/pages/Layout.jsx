@@ -1,7 +1,8 @@
-import React from 'react'
-import Nav from '../components/Nav'
-import Main from '../components/Main'
-import * as layout from "../styles/layouts"
+import React from "react";
+import Nav from "../components/Nav";
+import Main from "../components/Main";
+import * as layout from "../styles/layouts";
+import { useSelector } from "react-redux";
 
 function Layout() {
   const email = "dummy@gmail.com" // 추후 redux store에서 빼서 쓰기
@@ -18,9 +19,10 @@ function Layout() {
   return (
     <layout.Flex100>
       <Nav email={email} hex={userHex}/>
+  {/* cookie에 email 저장 후 cookie에서 이메일 빼 쓰기 */}
       <Main />
     </layout.Flex100>
-  )
+  );
 }
 
-export default Layout
+export default Layout;
