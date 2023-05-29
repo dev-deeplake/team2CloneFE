@@ -38,6 +38,7 @@ export const getCredit = () => {
 export const logout = () => {
   try {
     const response = axios.post(`${server_URL}/api/logout`, null, {
+      headers: { Authorization: document.cookie.split("=")[1] },
       withCredentials: true,
     });
     return response;

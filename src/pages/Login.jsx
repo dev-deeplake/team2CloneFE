@@ -11,13 +11,13 @@ import { setUserInfo } from "../redux/modules/userInfo";
 import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 import { useCookies } from "react-cookie";
-import { login, logout } from "../api/userAPI";
+import { login } from "../api/userAPI";
 
 function Login() {
   const userInfo = useSelector((state) => state.userInfo);
   const dispatch = useDispatch();
   const [isEmailInsert, setIsEmailInsert] = useState(false);
-  const [cookies, setCookie] = useCookies(["Authorization"]);
+  const [cookies, setCookie] = useCookies(["token"]);
   const navigate = useNavigate();
 
   const { mutateAsync: loginMutation } = useMutation(
@@ -25,7 +25,7 @@ function Login() {
     {
       onSuccess: async (res) => {
         console.log(res);
-        setCookie("Authorization", res.data["token"], { path: "/" });
+        setCookie("token", res.data["token"], { path: "/" });
         alert(res.data["message"]);
         navigate("/layout");
       },
