@@ -14,7 +14,9 @@ export const signUp = (userInfo) => {
 
 export const login = (userInfo) => {
   try {
-    const response = axios.post(`${server_URL}/api/login`, userInfo);
+    const response = axios.post(`${server_URL}/api/login`, userInfo, {
+      withCredentials: true,
+    });
     return response;
   } catch (err) {
     console.log(err);
@@ -36,7 +38,7 @@ export const getCredit = () => {
 export const logout = () => {
   try {
     const response = axios.post(`${server_URL}/api/logout`, null, {
-      headers: { Authorization: document.cookie.split("=")[1] },
+      withCredentials: true,
     });
     return response;
   } catch (err) {
