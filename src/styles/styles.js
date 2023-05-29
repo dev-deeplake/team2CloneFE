@@ -53,20 +53,33 @@ export const MainHeader = styled(layout.FlexCenter100)`
     color: ${sVar.black70};
 `
 // main 화면 아래쪽의 inputarea 스타일링
-export const MainInput = styled.div`
+export const MainInputContainer = styled(layout.FlexCenterRow100)`
     max-width: 672px;
     width: 100%;
+    min-height: 50px;
     border-radius: 4px;
     box-shadow: 1px 1px ${sVar.black05};
     position: fixed;
     bottom: 52px;
     border: 1px solid black;
-
-    > textarea {
-        max-width: 654px;
-        width: 95%;
-    }
+    padding: 7px 0 7px 16px;
 `
+export const MainInput = styled.textarea`
+  box-sizing: border-box;
+  display: flex;
+  max-width: 654px;
+  width: 92%;
+  padding: 4px;
+  flex-wrap: wrap;
+  max-height: 200px;
+  line-height: 1.5em;
+  ${props => {
+    if (!!props.height) {
+      return `height: ${props.height};`
+    }
+  }}
+`
+
 // nav 컨테이너 스타일링
 export const NavContainer = styled(layout.FlexColumnCenter)`
     min-width: 260px;
