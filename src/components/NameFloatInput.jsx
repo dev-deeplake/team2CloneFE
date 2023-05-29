@@ -1,9 +1,32 @@
-import React from 'react'
+import React from "react";
 
-function NameFloatInput({type, changeHandler, value, icon=false}) {
-  return (
-    <input required onChange={changeHandler} autoComplete="off" type={type} value={value} icon={icon}/>
-  )
+function NameFloatInput({
+  name,
+  type,
+  changeHandler,
+  value,
+  isEmailInsert = false,
+}) {
+  return isEmailInsert && name === "email" ? (
+    <input
+      name={name}
+      required
+      onChange={changeHandler}
+      autoComplete="off"
+      type={type}
+      value={value}
+      readOnly
+    />
+  ) : (
+    <input
+      name={name}
+      required
+      onChange={changeHandler}
+      autoComplete="off"
+      type={type}
+      value={value}
+    />
+  );
 }
 
-export default NameFloatInput
+export default NameFloatInput;

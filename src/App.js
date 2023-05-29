@@ -1,15 +1,7 @@
-import Home from './pages/Home';
-import Layout from './pages/Layout';
-import Login from './pages/Login';
-import SignUp from './pages/SignUp';
+import Router from "./shared/Router";
 
 function App() {
-  return (
-    // <Home />
-    // <Login />
-    // <SignUp />
-    <Layout />
-  );
+  return <Router />;
 }
 
 export default App;
