@@ -1,45 +1,41 @@
 import axios from "axios";
 
-const server_URL = process.env.REACT_APP_SERVER_URL;
+// axios 인스턴스 생성 및 인스턴스 defaults 설정
+const instance = axios.create({
+  baseURL: `${process.env.REACT_APP_SERVER_URL}/api/`,
+  withCredentials: true,
+  // headers: {
+  //   "Content-Type": "application/json",
+  // },
+});
 
-export const signUp = (userInfo) => {
-  try {
-    const response = axios.post(`${server_URL}/api/signup`, userInfo);
-    return response;
-  } catch (err) {
-    console.log(err.message);
-    throw err;
+// 요청 인터셉트
+// 설정된 기능 : 인터셉트하여 console에 찍어줌
+instance.interceptors.request.use(
+  function (config) {
+    console.log("request is ", config);
+    return config;
+  },
+  function (error) {
+    console.log("request error", error);
+    return Promise.reject(error);
   }
-};
+);
 
-export const login = (userInfo) => {
-  try {
-    const response = axios.post(`${server_URL}/api/login`, userInfo);
+// 응답 인터셉트
+// 설정된 기능 : 인터셉트하여 console에 찍어줌
+instance.interceptors.response.use(
+  function (response) {
+    console.log("response is ", response);
     return response;
-  } catch (err) {
-    console.log(err);
-    alert("로그인 도중 문제가 발생했습니다.");
+  },
+  function (error) {
+    console.log("response error", error);
+    return Promise.reject(error);
   }
-};
+);
 
-export const getCredit = () => {
-  try {
-    const response = axios.get(`${server_URL}/api/credit`, {
-      headers: { Authorization: document.cookie.split("=")[1] },
-    });
-    return response;
-  } catch (err) {
-    console.log(err.message);
-  }
-};
-
-export const logout = () => {
-  try {
-    const response = axios.post(`${server_URL}/api/logout`, null, {
-      headers: { Authorization: document.cookie.split("=")[1] },
-    });
-    return response;
-  } catch (err) {
-    console.log(err);
-  }
-};
+// 인스턴스 이용하여 HTTP request 생성
+export const login = (userInfo) => instance.post("/login", userInfo);
+export const signUp = (userInfo) => instance.post("/signup", userInfo);
+export const logout = () => instance.post("/logout", null);
