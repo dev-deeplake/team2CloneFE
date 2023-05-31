@@ -16,8 +16,9 @@ import { userEmail, userPassword } from "../recoil/userInfo/atoms";
 function Login() {
   const [isEmailInsert, setIsEmailInsert] = useState(false);
   const navigate = useNavigate();
-  const [email, setEmail] = useRecoilState(userEmail);
+  const [email, setEmail] = useRecoilState(userEmail); // 읽기 & 쓰기 모두 됨
   const [password, setPassword] = useRecoilState(userPassword);
+  // useRecoilValue => 읽기 전용 hook
 
   const { mutateAsync: loginMutation } = useMutation(
     (userInfo) => login(userInfo),
@@ -25,9 +26,9 @@ function Login() {
       onSuccess: (res) => {
         setCookie("Authorization", res.data["token"], {
           path: "/",
-          secure: true,
-          sameSite: "none",
-          domain: "gptclone.cz",
+          // secure: true,
+          // sameSite: "none",
+          // domain: "gptclone.cz",
         });
         console.log(getCookie("Authorization"));
         alert(res.data["message"]);
