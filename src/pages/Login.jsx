@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import * as layout from "../styles/layouts";
 import * as style from "../styles/styles";
 import * as sVar from "../styles/styleVariables";
@@ -6,26 +6,30 @@ import { ReactComponent as Logo } from "../icons/logo.svg";
 import NameFloatInput from "../components/NameFloatInput";
 import LoginHeader from "../components/LoginHeader";
 import GreenBtn from "../components/GreenBtn";
-import { useDispatch, useSelector } from "react-redux";
-import { setUserInfo } from "../redux/modules/userInfo";
 import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
-import { useCookies } from "react-cookie";
-import { login, logout } from "../api/userAPI";
+import { login } from "../api/userAPI";
+import { setCookie, getCookie } from "../util/cookie";
+import { useRecoilState } from "recoil";
+import { userEmail, userPassword } from "../recoil/userInfo/atoms";
 
 function Login() {
-  const userInfo = useSelector((state) => state.userInfo);
-  const dispatch = useDispatch();
   const [isEmailInsert, setIsEmailInsert] = useState(false);
-  const [cookies, setCookie] = useCookies(["Authorization"]);
   const navigate = useNavigate();
+  const [email, setEmail] = useRecoilState(userEmail);
+  const [password, setPassword] = useRecoilState(userPassword);
 
   const { mutateAsync: loginMutation } = useMutation(
     (userInfo) => login(userInfo),
     {
-      onSuccess: async (res) => {
-        console.log(res);
-        setCookie("Authorization", res.data["token"], { path: "/" });
+      onSuccess: (res) => {
+        setCookie("Authorization", res.data["token"], {
+          path: "/",
+          secure: true,
+          sameSite: "none",
+          domain: "gptclone.cz",
+        });
+        console.log(getCookie("Authorization"));
         alert(res.data["message"]);
         navigate("/layout");
       },
@@ -34,7 +38,16 @@ function Login() {
 
   const changeHandler = ({ target }) => {
     const { name, value } = target;
-    dispatch(setUserInfo({ name, value }));
+    switch (name) {
+      case "email":
+        setEmail(value);
+        break;
+      case "password":
+        setPassword(value);
+        break;
+      default:
+        break;
+    }
   };
 
   const postUserInfoForSignUpFunction = () => {
@@ -47,7 +60,7 @@ function Login() {
     ];
     // 입력한 이메일이 허용 양식 중에 있는지 확인
     const boolCheckEmailForm = !emailFormList.filter(
-      (form) => userInfo.email.split("@")[1] === form
+      (form) => email.split("@")[1] === form
     ).length;
     // 없으면 알람 발생
     if (boolCheckEmailForm) {
@@ -55,14 +68,10 @@ function Login() {
     }
     setIsEmailInsert(true);
     // pw 값 존재 시 회원가입 HTTP통신 진행
-    if (userInfo.password.length !== 0) {
-      loginMutation(userInfo);
+    if (password.length !== 0) {
+      loginMutation({ email, password });
     }
   };
-
-  useEffect(() => {
-    console.log(cookies);
-  }, [cookies]);
 
   return (
     <layout.FlexColumnCenter>
@@ -83,7 +92,7 @@ function Login() {
             name="email"
             type="email"
             changeHandler={changeHandler}
-            value={userInfo.email}
+            value={email}
             isEmailInsert={isEmailInsert}
           />
           {isEmailInsert ? (
@@ -91,7 +100,7 @@ function Login() {
               name="password"
               type="password"
               changeHandler={changeHandler}
-              value={userInfo.password}
+              value={password}
             />
           ) : null}
           <GreenBtn size="Big">Continue</GreenBtn>

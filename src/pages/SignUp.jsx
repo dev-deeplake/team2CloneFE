@@ -7,15 +7,15 @@ import NameFloatInput from "../components/NameFloatInput";
 import LoginHeader from "../components/LoginHeader";
 import { useMutation } from "react-query";
 import { signUp } from "../api/userAPI";
-import { useSelector, useDispatch } from "react-redux";
-import { setUserInfo } from "../redux/modules/userInfo";
 import GreenBtn from "../components/GreenBtn";
 import { Link, useNavigate } from "react-router-dom";
+import { useRecoilState } from "recoil";
+import { userEmail, userPassword } from "../recoil/userInfo/atoms";
 
 function SignUp() {
-  const userInfo = useSelector((state) => state.userInfo);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [email, setEmail] = useRecoilState(userEmail);
+  const [password, setPassword] = useRecoilState(userPassword);
   // 이메일이 올바르게 입력되면 true로 세팅됨
   const [isEmailInsert, setIsEmailInsert] = useState(false);
 
@@ -32,10 +32,20 @@ function SignUp() {
 
   const changeHandler = ({ target }) => {
     const { name, value } = target;
-    dispatch(setUserInfo({ name, value }));
+    switch (name) {
+      case "email":
+        setEmail(value);
+        break;
+      case "password":
+        setPassword(value);
+        break;
+      default:
+        break;
+    }
   };
 
-  const postUserInfoForSignUpFunction = () => {
+  const postUserInfoForSignUp = (event) => {
+    event.preventDefault();
     // 이메일 허용 양식
     const emailFormList = [
       "naver.com",
@@ -45,7 +55,7 @@ function SignUp() {
     ];
     // 입력한 이메일이 허용 양식 중에 있는지 확인
     const boolCheckEmailForm = !emailFormList.filter(
-      (form) => userInfo.email.split("@")[1] === form
+      (form) => email.split("@")[1] === form
     ).length;
     // 없으면 알람 발생
     if (boolCheckEmailForm) {
@@ -53,8 +63,8 @@ function SignUp() {
     }
     setIsEmailInsert(true);
     // pw 값 존재 시 회원가입 HTTP통신 진행
-    if (userInfo.password.length !== 0) {
-      signUpMutation(userInfo);
+    if (password.length !== 0) {
+      signUpMutation({ email, password });
     }
   };
 
@@ -78,17 +88,12 @@ function SignUp() {
           number will only be used to verify your identity for security
           purposes.
         </p>
-        <style.UserForm
-          onSubmit={(event) => {
-            event.preventDefault();
-            postUserInfoForSignUpFunction();
-          }}
-        >
+        <style.UserForm onSubmit={postUserInfoForSignUp}>
           <NameFloatInput
             name="email"
             type="email"
             changeHandler={changeHandler}
-            value={userInfo.email}
+            value={email}
             isEmailInsert={isEmailInsert}
           />
           {isEmailInsert ? (
@@ -96,7 +101,7 @@ function SignUp() {
               name="password"
               type="password"
               changeHandler={changeHandler}
-              value={userInfo.password}
+              value={password}
             />
           ) : null}
           <GreenBtn size="Big">Continue</GreenBtn>
