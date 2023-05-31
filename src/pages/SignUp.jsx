@@ -6,7 +6,7 @@ import { ReactComponent as Logo } from "../icons/logo.svg";
 import NameFloatInput from "../components/NameFloatInput";
 import LoginHeader from "../components/LoginHeader";
 import { useMutation } from "react-query";
-import { signUp } from "../api/userAPI";
+import { userAPI } from "../axios/api";
 import GreenBtn from "../components/GreenBtn";
 import { Link, useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
@@ -20,7 +20,7 @@ function SignUp() {
   const [isEmailInsert, setIsEmailInsert] = useState(false);
 
   const { mutateAsync: signUpMutation } = useMutation(
-    (userInfo) => signUp(userInfo),
+    (userInfo) => userAPI.signUp(userInfo),
     {
       onSuccess: async (res) => {
         console.log(res);

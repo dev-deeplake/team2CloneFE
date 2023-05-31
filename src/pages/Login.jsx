@@ -8,7 +8,7 @@ import LoginHeader from "../components/LoginHeader";
 import GreenBtn from "../components/GreenBtn";
 import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
-import { login } from "../api/userAPI";
+import { userAPI } from "../axios/api";
 import { setCookie, getCookie } from "../util/cookie";
 import { useRecoilState } from "recoil";
 import { userEmail, userPassword } from "../recoil/userInfo/atoms";
@@ -21,7 +21,7 @@ function Login() {
   // useRecoilValue => 읽기 전용 hook
 
   const { mutateAsync: loginMutation } = useMutation(
-    (userInfo) => login(userInfo),
+    (userInfo) => userAPI.login(userInfo),
     {
       onSuccess: (res) => {
         setCookie("Authorization", res.data["token"], {

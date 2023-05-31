@@ -2,11 +2,10 @@ import React, { useEffect } from "react";
 import Nav from "../components/Nav";
 import Main from "../components/Main";
 import * as layout from "../styles/layouts";
-import { useSelector } from "react-redux";
 import { useRecoilValue } from "recoil";
 import { userEmail } from "../recoil/userInfo/atoms";
-import instance, { gptAPI } from '../axios/api';
-import { useQuery, useQueryClient, useMutation } from 'react-query';
+import instance, { gptAPI } from "../axios/api";
+import { useQuery, useQueryClient, useMutation } from "react-query";
 
 function Layout() {
   const email = useRecoilValue(userEmail); // 추후 recoil에서 빼서 쓰기
@@ -21,7 +20,7 @@ function Layout() {
   };
   const userHex = getHex();
 
-  const { data, isLoading, error } = useQuery(["credits"], gptAPI.getCredit())
+  const { data, isLoading, error } = useQuery(["credits"], gptAPI.getCredit());
 
   // console.log("here!:::", useCookies(["Authorization"]))
   // const queryClient = useQueryClient();
@@ -29,14 +28,15 @@ function Layout() {
   //   queryClient.invalidateQueries("credits")
   //   console.log(data)
   // }, [data])
-  
 
   // const mutation = useMutation(gptAPI.getCredit, {
   //   onSuccess: () => {
   //     queryClient.invalidateQueries("credits");
   //   }
   // });
-  if(!isLoading) { console.log(data) }
+  if (!isLoading) {
+    console.log(data);
+  }
 
   return (
     <layout.Flex100>
