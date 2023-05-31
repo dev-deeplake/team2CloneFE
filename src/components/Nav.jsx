@@ -7,13 +7,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"; // + 아이콘
 import { faPlus } from "@fortawesome/free-solid-svg-icons"; // + 아이콘의 경우 FontAwesome에서 불러옴
 import { ReactComponent as Chat } from "../icons/wordBalloon.svg";
 import { useMutation } from "react-query";
-import { logout } from "../api/userAPI";
+import { userAPI } from "../axios/api";
 import { useNavigate } from "react-router-dom";
-import Modify from '../icons/Modify'
-import Delete from "../icons/Delete"
-import { ReactComponent as Dots } from "../icons/dots.svg"
-import UserIcon from '../icons/UserIcon'
-import UserMenu from './UserMenu'
+import Modify from "../icons/Modify";
+import Delete from "../icons/Delete";
+import { ReactComponent as Dots } from "../icons/dots.svg";
+import UserIcon from "../icons/UserIcon";
+import UserMenu from "./UserMenu";
 
 // email => redux 설정
 // user email에 따라 랜덤 아이콘 만들기 구현
@@ -46,8 +46,8 @@ function Nav({ email, hex }) {
   };
 
   const dateKeys = Object.keys(dummies.data);
-  
-  const { mutateAsync: logoutMutation } = useMutation(logout, {
+
+  const { mutateAsync: logoutMutation } = useMutation(userAPI.logout, {
     onSuccess: async (res) => {
       console.log(res);
       alert(res.data["message"]);
@@ -97,8 +97,8 @@ function Nav({ email, hex }) {
         })
       }
       <UserMenu
-        iconFront={<UserIcon email={email} hex={hex}/>}
-        iconTailOne={<div style={{width: "20px"}}></div>}
+        iconFront={<UserIcon email={email} hex={hex} />}
+        iconTailOne={<div style={{ width: "20px" }}></div>}
         iconTailTwo={<Dots />}
         email={email}
       />
@@ -111,7 +111,6 @@ function Nav({ email, hex }) {
           {email}
         </IconUsingBtn>
       </layout.FlexCenter> */}
-      
     </style.NavContainer>
   );
 }
