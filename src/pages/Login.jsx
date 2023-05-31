@@ -27,6 +27,7 @@ function Login() {
           path: "/",
           secure: true,
           sameSite: "none",
+          domain: "gptclone.cz",
         });
         console.log(getCookie("Authorization"));
         alert(res.data["message"]);

@@ -5,12 +5,13 @@ team2CloneFE
 # 변경사항
 
 1. 리덕스 삭제 -> 리코일로 대체, 이에 따른 폴더 구조 변경 (recoil 폴더 생성, redux 폴더 삭제)
-2. axios instance 생성
+2. 쿠키 관련 폴더 생성 => setCookie, getCookie 함수 추가하여 어디서든 import받아 사용 가능
+3. axios instance 생성
 
 - instance default 값에 withCredential:true 추가(서버와 cookie 주고 받기 위함)
 - instance default 값에 api 요청시 필요한 서버 URL+/api/ baseUrl추가 => 향후 axios 생성 시 상대경로만 지정하면 됨
 
-3. react hook form 설정 중...
+4. react hook form 설정 중...
 
 # BE에 요청사항
 

@@ -4,9 +4,9 @@ import axios from "axios";
 const instance = axios.create({
   baseURL: `${process.env.REACT_APP_SERVER_URL}/api/`,
   withCredentials: true,
-  headers: {
-    "Content-Type": "application/json",
-  },
+  // headers: {
+  //   "Content-Type": "application/json",
+  // },
 });
 
 // 요청 인터셉트
