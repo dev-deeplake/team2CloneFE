@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Nav from "../components/Nav";
 import Main from "../components/Main";
 import * as layout from "../styles/layouts";
 import { useSelector } from "react-redux";
+import instance, { gptAPI } from '../axios/api';
+import { useQuery, useQueryClient, useMutation } from 'react-query';
+import { useCookies } from "react-cookie";
 
 function Layout() {
   const email = "dummy@gmail.com" // 추후 redux store에서 빼서 쓰기
@@ -16,6 +19,24 @@ function Layout() {
       return hex
   }
   const userHex = getHex();
+
+  const { data, isLoading, error } = useQuery(["credits"], gptAPI.getCredit())
+
+  console.log("here!:::", useCookies(["Authorization"]))
+  // const queryClient = useQueryClient();
+  // useEffect(() => {
+  //   queryClient.invalidateQueries("credits")
+  //   console.log(data)
+  // }, [data])
+  
+
+  // const mutation = useMutation(gptAPI.getCredit, {
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries("credits");
+  //   }
+  // });
+  if(!isLoading) { console.log(data) }
+
   return (
     <layout.Flex100>
       <Nav email={email} hex={userHex}/>

@@ -13,6 +13,7 @@ import Modify from '../icons/Modify'
 import Delete from "../icons/Delete"
 import { ReactComponent as Dots } from "../icons/dots.svg"
 import UserIcon from '../icons/UserIcon'
+import UserMenu from './UserMenu'
 
 // email => redux 설정
 // user email에 따라 랜덤 아이콘 만들기 구현
@@ -45,8 +46,7 @@ function Nav({email, hex}) {
   };
 
   const dateKeys = Object.keys(dummies.data);
-  console.log(dateKeys);
-
+  
   const { mutateAsync: logoutMutation } = useMutation(logout, {
     onSuccess: async (res) => {
       console.log(res);
@@ -79,15 +79,21 @@ function Nav({email, hex}) {
           )
         })
       }
-      <layout.FlexCenter style={{position: "fixed", bottom: "0", width: "252px", paddingTop: "4px", borderTop: `1px solid ${sVar.white20}`}}>
+      <UserMenu
+        iconFront={<UserIcon email={email} hex={hex}/>}
+        iconTailOne={<div style={{width: "20px"}}></div>}
+        iconTailTwo={<Dots />}
+        email={email}
+      />
+      {/* <layout.FlexCenter style={{position: "fixed", bottom: "0", width: "252px", paddingTop: "4px", borderTop: `1px solid ${sVar.white20}`}}>
         <IconUsingBtn textWidth="200px"
                       customStyle={{marginBottom: "8px"}}
                       iconFront={<UserIcon email={email} hex={hex} />}
                       iconTailOne={<div style={{width: "20px"}}></div>}
                       iconTailTwo={<Dots />}>
           {email}
-        </IconUsingBtn> {/* user 프로필 버튼, 하단 고정  */}
-      </layout.FlexCenter>
+        </IconUsingBtn>
+      </layout.FlexCenter> */}
       
     </style.NavContainer>
   )
