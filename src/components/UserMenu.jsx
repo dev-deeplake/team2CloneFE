@@ -1,9 +1,11 @@
 import React from "react";
 import * as layout from "../styles/layouts";
+import * as style from "../styles/styles";
 import * as sVar from "../styles/styleVariables";
 import IconUsingBtn from "./IconUsingBtn";
 import { useState } from "react";
 import { ReactComponent as Logout } from "../icons/logout.svg"
+import LogoutPopup from './LogoutMenu';
 
 function UserMenu({ iconFront, iconTailOne, iconTailTwo, email }) {
   const [isMenuOn, setIsMenuOn] = useState(false);
@@ -39,15 +41,9 @@ function UserMenu({ iconFront, iconTailOne, iconTailTwo, email }) {
             </IconUsingBtn>
             {/* user 프로필 버튼, 하단 고정  */}
         </layout.FlexCenter>
-        { isMenuOn &&
+        { isMenuOn && 
             <layout.FlexCenter style={{padding:"2px 0 6px 0", borderRadius:"4px", background: `${sVar.black100}`, position:"absolute", bottom:"60px"}}>
-                <IconUsingBtn
-                    iconFront={<Logout style={{marginRight:"10px"}}/>}
-                    onMouseEnter={() => setHover(true)}
-                    onMouseLeave={() => setHover(false)}
-                    customStyle={hover ? {height:"55px", borderRadius: "0", background: `${sVar.white100}`} : {height:"55px", borderRadius: "0", background: `${sVar.black100}`}}>
-                        Log out
-                    </IconUsingBtn>
+                <LogoutPopup iconFront={<Logout style={{marginRight:"10px"}}/>}>Log out</LogoutPopup>
             </layout.FlexCenter>
         }
     </>

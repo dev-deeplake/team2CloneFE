@@ -6,6 +6,7 @@ import { useRecoilValue } from "recoil";
 import { userEmail } from "../recoil/userInfo/atoms";
 import instance, { gptAPI } from "../axios/api";
 import { useQuery, useQueryClient, useMutation } from "react-query";
+import { getCookie } from '../util/cookie';
 
 function Layout() {
   const email = useRecoilValue(userEmail); // 추후 recoil에서 빼서 쓰기
@@ -19,8 +20,10 @@ function Layout() {
     return hex;
   };
   const userHex = getHex();
+  const cookie = getCookie("Authorization");
+  console.log(cookie)
 
-  const { data, isLoading, error } = useQuery(["credits"], gptAPI.getCredit());
+  // const { data, isLoading, error } = useQuery(["credits"], gptAPI.getCredit());
 
   // console.log("here!:::", useCookies(["Authorization"]))
   // const queryClient = useQueryClient();
@@ -34,9 +37,9 @@ function Layout() {
   //     queryClient.invalidateQueries("credits");
   //   }
   // });
-  if (!isLoading) {
-    console.log(data);
-  }
+  // if (!isLoading) {
+  //   console.log(data);
+  // }
 
   return (
     <layout.Flex100>
