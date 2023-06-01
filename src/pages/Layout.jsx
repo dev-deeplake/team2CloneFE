@@ -3,6 +3,7 @@ import Nav from "../components/Nav";
 import Main from "../components/Main";
 import * as layout from "../styles/layouts";
 import { useQuery, useQueryClient, useMutation } from "react-query";
+import { getCookie } from '../util/cookie';
 
 function Layout() {
   const email = sessionStorage.getItem("Email"); // 추후 recoil에서 빼서 쓰기
@@ -16,6 +17,8 @@ function Layout() {
     return hex;
   };
   const userHex = getHex();
+  const cookie = getCookie("Authorization");
+  console.log(cookie)
 
   // const { data, isLoading, error } = useQuery(["credits"], gptAPI.getCredit());
 
