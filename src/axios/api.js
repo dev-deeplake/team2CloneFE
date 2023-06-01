@@ -34,7 +34,10 @@ instance.interceptors.response.use(
     return response;
   },
   function (error) {
-    console.log("response error", error);
+    alert(`
+    Error message : ${error.response.data.errorMessage}
+    Http status code : ${error.message}
+    `);
     return Promise.reject(error);
   }
 );
