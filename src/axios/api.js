@@ -1,12 +1,11 @@
 import axios from "axios";
-import { get } from "react-cookie";
 
 const instance = axios.create({
   baseURL: `${process.env.REACT_APP_SERVER_URL}/api/`,
-  // withCredentials: true,
+  withCredentials: true,
   headers: {
-    withCredentials: true,
-    "Content-Type": "application/json",
+    // withCredentials: true,
+    // "Content-Type": "application/json",
   },
 });
 
@@ -26,26 +25,26 @@ instance.interceptors.request.use(
 // 응답 인터셉트
 // 설정된 기능 : 인터셉트하여 console에 찍어줌
 instance.interceptors.response.use(
-    function (response) {
-      console.log("response is ", response);
-      return response;
-    },
-    function (error) {
-      console.log("response error", error);
-      return Promise.reject(error);
-    }
-  );
+  function (response) {
+    console.log("response is ", response);
+    return response;
+  },
+  function (error) {
+    console.log("response error", error);
+    return Promise.reject(error);
+  }
+);
 
 export const userAPI = {
-    // user 정보 관련
-    login: (userInfo) => instance.post("/login", userInfo),
-    signUp: (userInfo) => instance.post("/signup", userInfo),
-    logout: () => instance.post("/logout", null)
-}
+  // user 정보 관련
+  login: (userInfo) => instance.post("/login", userInfo),
+  signUp: (userInfo) => instance.post("/signup", userInfo),
+  logout: () => instance.post("/logout", null),
+};
 
 export const gptAPI = {
   // layout (nav + main)에서 사용
-  getCredit: async () => await instance.get("/api/credit"),
+  getCredit: async () => await instance.get("/credit"),
 };
 
 export default instance;

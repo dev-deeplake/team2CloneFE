@@ -20,7 +20,7 @@ function Layout() {
   };
   const userHex = getHex();
 
-  const { data, isLoading, error } = useQuery(["credits"], gptAPI.getCredit());
+  // const { data, isLoading, error } = useQuery(["credits"], gptAPI.getCredit());
 
   // console.log("here!:::", useCookies(["Authorization"]))
   // const queryClient = useQueryClient();
@@ -34,9 +34,9 @@ function Layout() {
   //     queryClient.invalidateQueries("credits");
   //   }
   // });
-  if (!isLoading) {
-    console.log(data);
-  }
+  // if (!isLoading) {
+  //   console.log(data);
+  // }
 
   return (
     <layout.Flex100>
