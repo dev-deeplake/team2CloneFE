@@ -24,6 +24,7 @@ function Login() {
     onSuccess: (res) => {
       setCookie("Authorization", res.data["token"], {
         path: "/",
+        // expires: setCookieExpirationHours(1), 쿠키의 유호시간은 서버에서만 설정 가능
         // secure: true,
         // sameSite: "none",
         // domain: "gptclone.cz",
@@ -52,6 +53,7 @@ function Login() {
   const postUserInfoForSignUpFunction = () => {
     // 이메일 허용 양식
     const emailFormList = ["naver.com", "gmail.com", "hanmail.net", "kakao.com"];
+    const passwordFormList = /[~!@#$%^&*()_+|<>?:{}]/;
     // 입력한 이메일이 허용 양식 중에 있는지 확인
     const boolCheckEmailForm = !emailFormList.filter((form) => email.split("@")[1] === form).length;
     // 없으면 알람 발생
@@ -60,7 +62,7 @@ function Login() {
     }
     setIsEmailInsert(true);
     // pw 값 존재 시 회원가입 HTTP통신 진행
-    if (password.length !== 0) {
+    if (password && passwordFormList.test(password)) {
       loginMutation({ email, password });
     }
   };

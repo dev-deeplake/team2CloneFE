@@ -26,6 +26,7 @@ function UserMenu({ iconFront, iconTailOne, iconTailTwo, email }) {
   const { mutateAsync: logoutMutation } = useMutation(userAPI.logout, {
     onSuccess: async (res) => {
       console.log(res);
+      sessionStorage.remove("Email");
       alert(res.data["message"]);
       navigate("/");
     },
