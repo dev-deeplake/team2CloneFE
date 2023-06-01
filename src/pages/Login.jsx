@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as layout from "../styles/layouts";
 import * as style from "../styles/styles";
 import * as sVar from "../styles/styleVariables";
@@ -14,8 +14,10 @@ import { useRecoilState } from "recoil";
 import { userEmail, userPassword } from "../recoil/userInfo/atoms";
 
 function Login() {
-  const [isEmailInsert, setIsEmailInsert] = useState(false);
   const navigate = useNavigate();
+
+  const [isEmailInsert, setIsEmailInsert] = useState(false);
+
   const [email, setEmail] = useRecoilState(userEmail); // 읽기 & 쓰기 모두 됨
   const [password, setPassword] = useRecoilState(userPassword);
   // useRecoilValue => 읽기 전용 hook
@@ -66,6 +68,13 @@ function Login() {
       loginMutation({ email, password });
     }
   };
+
+  useEffect(() => {
+    console.log("Mounted");
+    if (sessionStorage.getItem("Email")) {
+      navigate("/layout");
+    }
+  });
 
   return (
     <layout.FlexColumnCenter>

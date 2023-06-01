@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as layout from "../styles/layouts";
 import * as style from "../styles/styles";
 import * as sVar from "../styles/styleVariables";
@@ -58,6 +58,12 @@ function SignUp() {
       signUpMutation({ email, password });
     }
   };
+
+  useEffect(() => {
+    if (sessionStorage.getItem("Email")) {
+      navigate("/layout");
+    }
+  });
 
   return (
     <layout.FlexColumnCenter>
