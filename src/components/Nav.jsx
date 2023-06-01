@@ -6,9 +6,6 @@ import * as style from "../styles/styles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"; // + 아이콘의 경우 FontAwesome에서 불러옴, 불러오기 위한 import
 import { faPlus } from "@fortawesome/free-solid-svg-icons"; // + 아이콘의 경우 FontAwesome에서 불러옴
 import { ReactComponent as Chat } from "../icons/wordBalloon.svg";
-import { useMutation } from "react-query";
-import { userAPI } from "../axios/api";
-import { useNavigate } from "react-router-dom";
 import Modify from "../icons/Modify";
 import Delete from "../icons/Delete";
 import { ReactComponent as Dots } from "../icons/dots.svg";
@@ -18,7 +15,6 @@ import UserMenu from "./UserMenu";
 // email => redux 설정
 // user email에 따라 랜덤 아이콘 만들기 구현
 function Nav({ email, hex }) {
-  const navigate = useNavigate();
   const dummies = {
     success: true,
     data: {
@@ -47,26 +43,17 @@ function Nav({ email, hex }) {
 
   const dateKeys = Object.keys(dummies.data);
 
-  const { mutateAsync: logoutMutation } = useMutation(userAPI.logout, {
-    onSuccess: async (res) => {
-      console.log(res);
-      alert(res.data["message"]);
-      navigate("/");
-    },
-  });
+  // const { mutateAsync: logoutMutation } = useMutation(userAPI.logout, {
+  //   onSuccess: async (res) => {
+  //     console.log(res);
+  //     alert(res.data["message"]);
+  //     navigate("/");
+  //   },
+  // });
 
   return (
     <style.NavContainer>
-      <IconUsingBtn
-        customStyle={{ border: `1px solid ${sVar.white20}`, width: "100%" }}
-        iconFront={
-          <FontAwesomeIcon
-            icon={faPlus}
-            size="sm"
-            style={{ color: "#ffffff", padding: "0 10px 0 2px" }}
-          />
-        }
-      >
+      <IconUsingBtn customStyle={{ border: `1px solid ${sVar.white20}`, width: "100%" }} iconFront={<FontAwesomeIcon icon={faPlus} size="sm" style={{ color: "#ffffff", padding: "0 10px 0 2px" }} />}>
         New chat
       </IconUsingBtn>
       {
@@ -78,13 +65,9 @@ function Nav({ email, hex }) {
               <style.GroupText>{group}</style.GroupText>
               {dummies["data"][group].map((entry) => (
                 <IconUsingBtn
-                  onClickHandler={logoutMutation}
+                  // onClickHandler={logoutMutation}
                   textWidth="170px"
-                  iconFront={
-                    <Chat
-                      style={{ transform: "scaleX(-1)", marginRight: "10px" }}
-                    />
-                  }
+                  iconFront={<Chat style={{ transform: "scaleX(-1)", marginRight: "10px" }} />}
                   iconTailOne={<Modify style={{ marginRight: "10px" }} />}
                   iconTailTwo={<Delete />}
                   key={entry["chatId"]}
@@ -96,12 +79,7 @@ function Nav({ email, hex }) {
           );
         })
       }
-      <UserMenu
-        iconFront={<UserIcon email={email} hex={hex} />}
-        iconTailOne={<div style={{ width: "20px" }}></div>}
-        iconTailTwo={<Dots />}
-        email={email}
-      />
+      <UserMenu iconFront={<UserIcon email={email} hex={hex} />} iconTailOne={<div style={{ width: "20px" }}></div>} iconTailTwo={<Dots />} email={email} />
       {/* <layout.FlexCenter style={{position: "fixed", bottom: "0", width: "252px", paddingTop: "4px", borderTop: `1px solid ${sVar.white20}`}}>
         <IconUsingBtn textWidth="200px"
                       customStyle={{marginBottom: "8px"}}
