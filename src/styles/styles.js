@@ -107,3 +107,10 @@ export const UserIcon = styled(layout.FlexCenter100)`
   font-size: 0.1rem;
   border-radius: 0.1rem;
 `
+
+// logout 메뉴 스타일링
+export const LogoutMenu = styled(IconUsingBtn)`
+  &:hover {
+    background: ${sVar.sideFontColor};
+  }
+`
