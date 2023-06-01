@@ -6,9 +6,6 @@ import * as style from "../styles/styles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"; // + 아이콘의 경우 FontAwesome에서 불러옴, 불러오기 위한 import
 import { faPlus } from "@fortawesome/free-solid-svg-icons"; // + 아이콘의 경우 FontAwesome에서 불러옴
 import { ReactComponent as Chat } from "../icons/wordBalloon.svg";
-import { useMutation } from "react-query";
-import { userAPI } from "../axios/api";
-import { useNavigate } from "react-router-dom";
 import Modify from "../icons/Modify";
 import Delete from "../icons/Delete";
 import { ReactComponent as Dots } from "../icons/dots.svg";
@@ -18,7 +15,6 @@ import UserMenu from "./UserMenu";
 // email => redux 설정
 // user email에 따라 랜덤 아이콘 만들기 구현
 function Nav({ email, hex }) {
-  const navigate = useNavigate();
   const dummies = {
     success: true,
     data: {

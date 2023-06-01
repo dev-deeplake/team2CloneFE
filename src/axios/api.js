@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getCookie } from "../util/cookie";
 
 const instance = axios.create({
   baseURL: `${process.env.REACT_APP_SERVER_URL}/api/`,
@@ -13,6 +14,9 @@ const instance = axios.create({
 // 설정된 기능 : 인터셉트하여 console에 찍어줌
 instance.interceptors.request.use(
   function (config) {
+    const isCookie = getCookie("Authorization");
+    const cookie = isCookie ? isCookie : null;
+    config = { ...config, Authorization: cookie };
     console.log("request is ", config);
     return config;
   },
@@ -37,9 +41,9 @@ instance.interceptors.response.use(
 
 export const userAPI = {
   // user 정보 관련
-  login: (userInfo) => instance.post("/login", userInfo),
-  signUp: (userInfo) => instance.post("/signup", userInfo),
-  logout: () => instance.post("/logout", null),
+  login: async (userInfo) => await instance.post("/login", userInfo),
+  signUp: async (userInfo) => await instance.post("/signup", userInfo),
+  logout: async () => await instance.post("/logout", null),
 };
 
 export const gptAPI = {
