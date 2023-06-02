@@ -5,12 +5,26 @@ import * as style from "../styles/styles"
 import * as sVar from "../styles/styleVariables"
 import Send from '../icons/Send'
 import { useState, useRef, useEffect } from 'react'
+import { useMutation } from 'react-query'
+import { gptAPI } from '../axios/api'
 
-function MainTextInput({handleSubmit}) {
+function MainTextInput() {
     const INIT_HEIGHT = "24px"
+    const INIT_INPUT_VALUE = ""
     const [inputHeight, setInputHeight] = useState(INIT_HEIGHT)
+    const [inputValue, setInputValue] = useState(INIT_INPUT_VALUE)
     const [lineCount, setLineCount] = useState(0)
     const textAreaRef = useRef(null)
+    const makeChatMutation = useMutation(gptAPI.makeChat, {
+        onSuccess: (res) => {
+          console.log("res", res)
+        }
+    })
+    
+    const handleSubmit = () => {
+        // console.log(inputValue)
+        makeChatMutation.mutate({ ask: inputValue })
+    }
 
     useEffect(() => {
         const countLines = () => {
@@ -21,18 +35,21 @@ function MainTextInput({handleSubmit}) {
                 console.log(lineHeight)
                 console.log(scrollHeight)
                 console.log(lines)
+                console.log(inputValue)
                 console.log("=========")
                 setLineCount(lines)
             }
         }
         countLines()
-
-        // if ()
-    })
+    }, [inputValue])
   return (
     <style.MainInputContainer>
-        <style.MainInput height={inputHeight} placeholder="send a message..."></style.MainInput>
-        <Send isContent={true} handleSubmit={handleSubmit}/>
+        <style.MainInput
+            onChange={(event) => setInputValue(event.target.value)}
+            value={inputValue}
+            height={inputHeight}
+            placeholder="send a message..."></style.MainInput>
+        <Send isContent={!!inputValue} handleSubmit={handleSubmit}/>
     </style.MainInputContainer>
   )
 }
