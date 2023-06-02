@@ -36,7 +36,6 @@ instance.interceptors.response.use(
   },
   function (error) {
     alert(`
-    Error message : ${error.response.data.errorMessage}
     Http status code : ${error.message}
     `);
     return Promise.reject(error);
@@ -53,6 +52,8 @@ export const userAPI = {
 export const gptAPI = {
   // layout (nav + main)에서 사용
   getCredit: async () => await instance.get("/credit"),
+  getChats: async () => await instance.get("/chat"),
+  makeChat: async (ask) => await instance.post("/chat", ask),
 };
 
 export default instance;
