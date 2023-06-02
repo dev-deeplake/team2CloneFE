@@ -9,9 +9,10 @@ import GreenBtn from "../components/GreenBtn";
 import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 import { userAPI } from "../axios/api";
-import { setCookie, getCookie } from "../util/cookie";
+import { setCookie } from "../util/cookie";
 import { useRecoilState } from "recoil";
 import { userEmail, userPassword } from "../recoil/userInfo/atoms";
+import { cryptoKey, encrypt } from "../util/crypto";
 
 function Login() {
   const navigate = useNavigate();
@@ -22,17 +23,22 @@ function Login() {
   const [password, setPassword] = useRecoilState(userPassword);
   // useRecoilValue => 읽기 전용 hook
 
+  const setCookieExpireDay = (day) => {
+    let expireDay = new Date();
+    expireDay.setHours(expireDay.getHours() + day * 24 + 9);
+    return expireDay;
+  };
+
   const { mutateAsync: loginMutation } = useMutation((userInfo) => userAPI.login(userInfo), {
     onSuccess: (res) => {
-      setCookie("Authorization", res.data["token"], {
-        path: "/",
-        // expires: setCookieExpirationHours(1), 쿠키의 유호시간은 서버에서만 설정 가능
-        // secure: true,
-        // sameSite: "none",
-        // domain: "gptclone.cz",
+      setCookie("Authorization", res.data["data"].Authorization, {
+        path: "/", // '/'설정시 : 모든 하위 도메인에서 쿠키 사용 가능 ex) domain: naver.com => 하위 domain : news.naver.com
+        // secure: true, // https 프로토콜 사용 시에만 쿠키 전송 가능, 서드 파티 쿠키(다른 도메인으로의 전송 필요한 쿠키) 사용시 sameSite: none과 같이 사용
+        sameSite: "strict", // 퍼스트 파티 쿠키만 전송 : 동일 도메인에만 쿠키 전송 가능, 향후 CSRF 문제를 해결하기 위해 적용
+        // domain: "gptclone.cz", // 전송되어질 도메인(서버 도메인)
+        expires: setCookieExpireDay(1), // 만료 시간 설정 시 브라우저 종료 시 삭제되지 않음 : 향후 자동롤그인 기능 구현 시 쿠키 사용할 예정
       });
-      sessionStorage.setItem("Email", email);
-      console.log(getCookie("Authorization"));
+      sessionStorage.setItem("Email", encrypt({ email: email }, cryptoKey)); // email을 암호화하여 sessionStorage에 저장
       alert(res.data["message"]);
       navigate("/layout");
     },
@@ -70,7 +76,6 @@ function Login() {
   };
 
   useEffect(() => {
-    console.log("Mounted");
     if (sessionStorage.getItem("Email")) {
       navigate("/layout");
     }

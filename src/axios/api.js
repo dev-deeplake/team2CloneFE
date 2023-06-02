@@ -1,10 +1,14 @@
 import axios from "axios";
 import { getCookie } from "../util/cookie";
 
+const isCookie = getCookie("Authorization");
+const cookie = isCookie ? isCookie : null;
+
 const instance = axios.create({
   baseURL: `${process.env.REACT_APP_SERVER_URL}/api/`,
   withCredentials: true,
   headers: {
+    Authorization: cookie,
     // withCredentials: true,
     // "Content-Type": "application/json",
   },
@@ -14,9 +18,6 @@ const instance = axios.create({
 // 설정된 기능 : 인터셉트하여 console에 찍어줌
 instance.interceptors.request.use(
   function (config) {
-    const isCookie = getCookie("Authorization");
-    const cookie = isCookie ? isCookie : null;
-    config = { ...config, Authorization: cookie };
     console.log("request is ", config);
     return config;
   },
@@ -34,7 +35,10 @@ instance.interceptors.response.use(
     return response;
   },
   function (error) {
-    console.log("response error", error);
+    alert(`
+    Error message : ${error.response.data.errorMessage}
+    Http status code : ${error.message}
+    `);
     return Promise.reject(error);
   }
 );

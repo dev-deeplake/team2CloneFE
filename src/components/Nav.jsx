@@ -61,7 +61,7 @@ function Nav({ email, hex }) {
         // 해당 key를 기준으로 map 돌리기, 내용을 btn 씌워 반환
         dateKeys.map((group) => {
           return (
-            <layout.FlexColumnCenter style={{ alignItems: "flex-start" }}>
+            <layout.FlexColumnCenter key={group} style={{ alignItems: "flex-start" }}>
               <style.GroupText>{group}</style.GroupText>
               {dummies["data"][group].map((entry) => (
                 <IconUsingBtn

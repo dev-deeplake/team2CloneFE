@@ -3,10 +3,11 @@ import Nav from "../components/Nav";
 import Main from "../components/Main";
 import * as layout from "../styles/layouts";
 import { useQuery, useQueryClient, useMutation } from "react-query";
-import { getCookie } from '../util/cookie';
+import { getCookie } from "../util/cookie";
+import { cryptoKey, decrypt } from "../util/crypto";
 
 function Layout() {
-  const email = sessionStorage.getItem("Email"); // 추후 recoil에서 빼서 쓰기
+  const email = decrypt(sessionStorage.getItem("Email"), cryptoKey); // 암호화된 Email 복호화
   const hexValues = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "A", "B", "C", "D", "E"]; // F는 흐린 계열이 나오지 않게 하기 위해 제외
   const getHex = () => {
     let hex = "#";
@@ -18,7 +19,7 @@ function Layout() {
   };
   const userHex = getHex();
   const cookie = getCookie("Authorization");
-  console.log(cookie)
+  console.log(cookie);
 
   // const { data, isLoading, error } = useQuery(["credits"], gptAPI.getCredit());
 

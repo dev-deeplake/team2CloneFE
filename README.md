@@ -12,6 +12,10 @@ team2CloneFE
 - instance default 값에 api 요청시 필요한 서버 URL+/api/ baseUrl추가 => 향후 axios 생성 시 상대경로만 지정하면 됨
 
 4. react hook form 설정 중...
+5. Nav component error 해결
+
+- class => className : Icon component 들 중 대부분이 JSX 문법의 className 이 아닌 class 사용으로 인한 error 발생
+- map의 결과물로 나오는 요소들에 고유 key 적용: Nav의 이중 map 중 첫 번째 map의 반환 요소에 고유 식별 key 설정되어 있지 않음에 따른 error 발생
 
 # BE에 요청사항
 
