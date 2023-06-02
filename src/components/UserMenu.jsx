@@ -8,7 +8,6 @@ import * as layout from "../styles/layouts";
 import * as style from "../styles/styles";
 import * as sVar from "../styles/styleVariables";
 import IconUsingBtn from "./IconUsingBtn";
-import { useState } from "react";
 import { ReactComponent as Logout } from "../icons/logout.svg"
 import LogoutPopup from './LogoutMenu';
 
