@@ -31,7 +31,7 @@ function Login() {
 
   const { mutateAsync: loginMutation } = useMutation((userInfo) => userAPI.login(userInfo), {
     onSuccess: (res) => {
-      setCookie("Authorization", res.data["token"], {
+      setCookie("Authorization", res.data["data"].Authorization, {
         path: "/", // '/'설정시 : 모든 하위 도메인에서 쿠키 사용 가능 ex) domain: naver.com => 하위 domain : news.naver.com
         // secure: true, // https 프로토콜 사용 시에만 쿠키 전송 가능, 서드 파티 쿠키(다른 도메인으로의 전송 필요한 쿠키) 사용시 sameSite: none과 같이 사용
         sameSite: "strict", // 퍼스트 파티 쿠키만 전송 : 동일 도메인에만 쿠키 전송 가능, 향후 CSRF 문제를 해결하기 위해 적용
