@@ -114,3 +114,14 @@ export const LogoutMenu = styled(IconUsingBtn)`
     background: ${sVar.sideFontColor};
   }
 `
+
+// send icon container 스타일링
+export const SendContainer = styled.div`
+  padding: 12px;
+  cursor: pointer;
+  ${props => {
+    if (!!props.isContent) {
+      return `background: rgba(171, 104, 255, 1);`
+    }
+  }}
+`
