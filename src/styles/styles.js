@@ -83,8 +83,8 @@ export const MainInput = styled.textarea`
 // nav 컨테이너 스타일링
 export const NavContainer = styled(layout.FlexColumnCenter)`
     min-width: 260px;
-    padding: 10px 10px;
-    height: 100vh;
+    padding: 10px 10px 62px 10px;
+    height: 110vh;
     justify-content: flex-start;
     background-color: ${sVar.darkSide};
 `

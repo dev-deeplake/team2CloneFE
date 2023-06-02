@@ -43,6 +43,7 @@ function UserMenu({ iconFront, iconTailOne, iconTailTwo, email }) {
           width: "252px",
           paddingTop: "4px",
           borderTop: `1px solid ${sVar.white20}`,
+          background: `${sVar.darkSide}`
         }}
       >
         <IconUsingBtn textWidth="200px" customStyle={{ marginBottom: "8px" }} iconFront={iconFront} iconTailOne={iconTailOne} iconTailTwo={iconTailTwo} onClick={menuHandler}>

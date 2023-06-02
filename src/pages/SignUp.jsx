@@ -15,7 +15,7 @@ import { userEmail, userPassword } from "../recoil/userInfo/atoms";
 function SignUp() {
   const navigate = useNavigate();
   const [email, setEmail] = useRecoilState(userEmail);
-  const [password, setPassword] = useRecoilState(userPassword);
+  const [password, setPassword] = useState("");
   // 이메일이 올바르게 입력되면 true로 세팅됨
   const [isEmailInsert, setIsEmailInsert] = useState(false);
 

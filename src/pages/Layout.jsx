@@ -33,15 +33,6 @@ function Layout() {
   if (!isLoading && isError) {
     setResponse(true)
   }
-  const makeChatMutation = useMutation(gptAPI.makeChat, {
-    onSuccess: (res) => {
-      console.log("res", res)
-    }
-  })
-
-  const handleSubmit = () => {
-    makeChatMutation.mutate({ ask: inputContent })
-  }
 
 
   return (
@@ -50,7 +41,7 @@ function Layout() {
         !!chats ?
         (<layout.Flex100>
           <Nav email={email} hex={userHex} chats={chats}/>
-          <Main handleSubmit={handleSubmit}/>
+          <Main />
         </layout.Flex100>) : 
         (<div>Loading...</div>)
       }

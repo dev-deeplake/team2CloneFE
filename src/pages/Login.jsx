@@ -20,7 +20,7 @@ function Login() {
   const [isEmailInsert, setIsEmailInsert] = useState(false);
 
   const [email, setEmail] = useRecoilState(userEmail); // 읽기 & 쓰기 모두 됨
-  const [password, setPassword] = useRecoilState(userPassword);
+  const [password, setPassword] = useState("");
   // useRecoilValue => 읽기 전용 hook
 
   const setCookieExpireDay = (day) => {
