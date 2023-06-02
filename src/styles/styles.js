@@ -117,7 +117,9 @@ export const LogoutMenu = styled(IconUsingBtn)`
 
 // send icon container 스타일링
 export const SendContainer = styled.div`
-  padding: 12px;
+  margin-left: 10px;
+  padding: 6px;
+  border-radius: 6px;
   cursor: pointer;
   ${props => {
     if (!!props.isContent) {

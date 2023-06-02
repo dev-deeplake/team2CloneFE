@@ -3,9 +3,10 @@ import styled from 'styled-components'
 import * as layout from "../styles/layouts"
 import * as style from "../styles/styles"
 import * as sVar from "../styles/styleVariables"
+import Send from '../icons/Send'
 import { useState, useRef, useEffect } from 'react'
 
-function MainTextInput() {
+function MainTextInput({handleSubmit}) {
     const INIT_HEIGHT = "24px"
     const [inputHeight, setInputHeight] = useState(INIT_HEIGHT)
     const [lineCount, setLineCount] = useState(0)
@@ -31,6 +32,7 @@ function MainTextInput() {
   return (
     <style.MainInputContainer>
         <style.MainInput height={inputHeight} placeholder="send a message..."></style.MainInput>
+        <Send isContent={true} handleSubmit={handleSubmit}/>
     </style.MainInputContainer>
   )
 }
