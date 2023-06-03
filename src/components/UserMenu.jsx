@@ -39,8 +39,8 @@ function UserMenu({ iconFront, iconTailOne, iconTailTwo, email }) {
     <>
       <layout.FlexCenter
         style={{
-          position: "fixed",
-          bottom: "0",
+          // position: "fixed",
+          // bottom: "0",
           width: "252px",
           paddingTop: "4px",
           borderTop: `1px solid ${sVar.white20}`,

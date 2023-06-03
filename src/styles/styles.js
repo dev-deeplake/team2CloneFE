@@ -83,10 +83,17 @@ export const MainInput = styled.textarea`
 // nav 컨테이너 스타일링
 export const NavContainer = styled(layout.FlexColumnCenter)`
     min-width: 260px;
-    padding: 10px 10px 62px 10px;
-    height: 110vh;
+    padding: 10px;
+    /* height: 100vh; */
     justify-content: flex-start;
     background-color: ${sVar.darkSide};
+`
+
+// nav 대화 리스트 레이아웃
+export const HeadFootBtnContainer = styled(layout.FlexColumn100)`
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: calc(100vh - 120px);
 `
 
 // nav group text 스타일링
