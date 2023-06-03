@@ -1,5 +1,5 @@
-import { createGlobalStyle } from 'styled-components';
-import * as sVar from "../styles/styleVariables"
+import { createGlobalStyle } from "styled-components";
+import * as sVar from "../styles/styleVariables";
 
 const GlobalStyles = createGlobalStyle`
   /* Eric Meyer's CSS Reset */
@@ -56,6 +56,11 @@ const GlobalStyles = createGlobalStyle`
   }
   button {
     cursor: pointer;
+  }
+  pre {
+  background-color: #d1fff74d;
+  padding: 10px;
+  font-family: "Courier New", Courier, monospace;
   }
 `;
 
