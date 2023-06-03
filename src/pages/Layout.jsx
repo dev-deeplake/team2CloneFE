@@ -4,21 +4,14 @@ import Main from "../components/Main";
 import * as layout from "../styles/layouts";
 import { useQuery, useQueryClient, useMutation } from "react-query";
 import { cryptoKey, decrypt } from "../util/crypto";
-import { gptAPI } from "../axios/api";
+import { gptAPI, userAPI } from "../axios/api";
 import { useNavigate } from "react-router-dom";
 
 function Layout() {
-
   const navigate = useNavigate();
-  let email;
-  try {
-    email = decrypt(localStorage.getItem("USR"), cryptoKey).email;
-  } catch (err) {
-    console.log(`error::: ${err}`)
-    navigate("/login");
-  }
-   // 암호화된 Email 복호화
-  const INPUT_INIT_STATE = "";
+
+  const email = !!localStorage.getItem("USR") ? decrypt(localStorage.getItem("USR"), cryptoKey).email : "example@naver.com";
+
   const hexValues = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "A", "B", "C", "D", "E"]; // F는 흐린 계열이 나오지 않게 하기 위해 제외
   const getHex = () => {
     let hex = "#";
@@ -41,15 +34,36 @@ function Layout() {
     select: (data) => data.data.data,
     // refetchInterval: 5000,
     enabled: !listResponse,
+    onError: () => {
+      alert("로그인이 필요합니다!");
+      sessionStorage.removeItem("Login");
+      navigate("/login");
+    },
+    onSuccess: () => {
+      sessionStorage.setItem("Login", true);
+    },
+    refetchOnWindowFocus: false,
   });
   if (!listIsLoading && listIsError) {
     setListResponse(true);
-    sessionStorage.setItem("Login", true);
   }
-  if (listIsError) {
-    alert("로그인이 필요합니다!");
-    navigate("/login");
-  }
+
+  const { data: credit } = useQuery(["credit"], userAPI.getCredit, {
+    onSuccess: (res) => {
+      console.log(res);
+    },
+    refetchOnWindowFocus: false,
+  });
+
+  useEffect(() => {
+    if (email === "example@naver.com") {
+      sessionStorage.removeItem("Login");
+      navigate("/login");
+    }
+    if (!!sessionStorage.getItem("Logout")) {
+      navigate("/login");
+    }
+  }, [navigate, email]);
 
   // /api/chat으로 post 요청을 보내 새로운 대화를 생성하고, 새로운 대화가 생성된 후 받아오는 response를 통해 chatId state 관리 및 응답 추출 관련 파트
 

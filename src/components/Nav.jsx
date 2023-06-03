@@ -15,9 +15,6 @@ import UserMenu from "./UserMenu";
 // email => redux 설정
 // user email에 따라 랜덤 아이콘 만들기 구현
 function Nav({ email, hex, chats, navOnClick, focusedChat }) {
-  console.log(chats)
-  console.log(Object.keys(chats))
-
   const dateKeys = Object.keys(chats)
 
   return (

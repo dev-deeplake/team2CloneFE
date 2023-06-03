@@ -10,8 +10,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 import { userAPI } from "../axios/api";
 import { setCookie } from "../util/cookie";
-import { useRecoilState } from "recoil";
-import { userEmail, userPassword } from "../recoil/userInfo/atoms";
 import { cryptoKey, encrypt, decrypt } from "../util/crypto";
 
 function Login() {
@@ -19,8 +17,11 @@ function Login() {
 
   const [isEmailInsert, setIsEmailInsert] = useState(false);
 
-  const [email, setEmail] = useState(""); // 읽기 & 쓰기 모두 됨
-  const [password, setPassword] = useState("");
+  const defaultEmail = !!localStorage.getItem("USR") ? decrypt(localStorage.getItem("USR"), cryptoKey).email : "";
+  const defaultPassword = !!localStorage.getItem("USR") ? decrypt(localStorage.getItem("USR"), cryptoKey).password : "";
+
+  const [email, setEmail] = useState(defaultEmail); // 읽기 & 쓰기 모두 됨
+  const [password, setPassword] = useState(defaultPassword);
 
   const setCookieExpireDay = (day) => {
     let expireDay = new Date();
@@ -37,10 +38,16 @@ function Login() {
         // domain: "gptclone.cz", // 전송되어질 도메인(서버 도메인)
         expires: setCookieExpireDay(1), // 만료 시간 설정 시 브라우저 종료 시 삭제되지 않음 : 향후 자동롤그인 기능 구현 시 쿠키 사용할 예정
       });
+
       localStorage.setItem("USR", encrypt({ email, password }, cryptoKey)); // email을 암호화하여 sessionStorage에 저장
       sessionStorage.setItem("Login", true);
+      sessionStorage.removeItem("Logout");
+
       alert(res.data["message"]);
       navigate("/");
+    },
+    onError: (err) => {
+      alert(err.response.data.message);
     },
   });
 
@@ -58,10 +65,9 @@ function Login() {
     }
   };
 
-  const autoSetEmail = () => {
-    if (localStorage.getItem("USR")) {
-      setEmail(decrypt(localStorage.getItem("USR"), cryptoKey).email);
-    }
+  const postUserInfoForSignUp = (event) => {
+    event.preventDefault();
+    isEmailInsert ? checkUserPassword() : checkUserEmail();
   };
 
   const checkUserEmail = () => {
@@ -74,9 +80,6 @@ function Login() {
       return alert("올바른 이메일 형태가 아닙니다. 다시 작성해주세요");
     }
     setIsEmailInsert(true);
-    if (!!localStorage.getItem("USR")) {
-      setPassword(decrypt(localStorage.getItem("USR"), cryptoKey).password);
-    }
   };
 
   const checkUserPassword = () => {
@@ -86,16 +89,10 @@ function Login() {
     }
   };
 
-  const postUserInfoForSignUp = (event) => {
-    event.preventDefault();
-    isEmailInsert ? checkUserPassword() : checkUserEmail();
-  };
-
   useEffect(() => {
     if (sessionStorage.getItem("Login")) {
       navigate("/");
     }
-    autoSetEmail();
   });
 
   return (
