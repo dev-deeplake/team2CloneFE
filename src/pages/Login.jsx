@@ -12,16 +12,15 @@ import { userAPI } from "../axios/api";
 import { setCookie } from "../util/cookie";
 import { useRecoilState } from "recoil";
 import { userEmail, userPassword } from "../recoil/userInfo/atoms";
-import { cryptoKey, encrypt } from "../util/crypto";
+import { cryptoKey, encrypt, decrypt } from "../util/crypto";
 
 function Login() {
   const navigate = useNavigate();
 
   const [isEmailInsert, setIsEmailInsert] = useState(false);
 
-  const [email, setEmail] = useRecoilState(userEmail); // 읽기 & 쓰기 모두 됨
+  const [email, setEmail] = useState(""); // 읽기 & 쓰기 모두 됨
   const [password, setPassword] = useState("");
-  // useRecoilValue => 읽기 전용 hook
 
   const setCookieExpireDay = (day) => {
     let expireDay = new Date();
@@ -38,9 +37,10 @@ function Login() {
         // domain: "gptclone.cz", // 전송되어질 도메인(서버 도메인)
         expires: setCookieExpireDay(1), // 만료 시간 설정 시 브라우저 종료 시 삭제되지 않음 : 향후 자동롤그인 기능 구현 시 쿠키 사용할 예정
       });
-      sessionStorage.setItem("Email", encrypt({ email: email }, cryptoKey)); // email을 암호화하여 sessionStorage에 저장
+      localStorage.setItem("USR", encrypt({ email, password }, cryptoKey)); // email을 암호화하여 sessionStorage에 저장
+      sessionStorage.setItem("Login", true);
       alert(res.data["message"]);
-      navigate("/layout");
+      navigate("/");
     },
   });
 
@@ -58,10 +58,15 @@ function Login() {
     }
   };
 
-  const postUserInfoForSignUpFunction = () => {
+  const autoSetEmail = () => {
+    if (localStorage.getItem("USR")) {
+      setEmail(decrypt(localStorage.getItem("USR"), cryptoKey).email);
+    }
+  };
+
+  const checkUserEmail = () => {
     // 이메일 허용 양식
     const emailFormList = ["naver.com", "gmail.com", "hanmail.net", "kakao.com"];
-    const passwordFormList = /[~!@#$%^&*()_+|<>?:{}]/;
     // 입력한 이메일이 허용 양식 중에 있는지 확인
     const boolCheckEmailForm = !emailFormList.filter((form) => email.split("@")[1] === form).length;
     // 없으면 알람 발생
@@ -69,16 +74,28 @@ function Login() {
       return alert("올바른 이메일 형태가 아닙니다. 다시 작성해주세요");
     }
     setIsEmailInsert(true);
-    // pw 값 존재 시 회원가입 HTTP통신 진행
+    if (!!localStorage.getItem("USR")) {
+      setPassword(decrypt(localStorage.getItem("USR"), cryptoKey).password);
+    }
+  };
+
+  const checkUserPassword = () => {
+    const passwordFormList = /[~!@#$%^&*()_+|<>?:{}]/;
     if (password && passwordFormList.test(password)) {
       loginMutation({ email, password });
     }
   };
 
+  const postUserInfoForSignUp = (event) => {
+    event.preventDefault();
+    isEmailInsert ? checkUserPassword() : checkUserEmail();
+  };
+
   useEffect(() => {
-    if (sessionStorage.getItem("Email")) {
-      navigate("/layout");
+    if (sessionStorage.getItem("Login")) {
+      navigate("/");
     }
+    autoSetEmail();
   });
 
   return (
@@ -88,12 +105,7 @@ function Login() {
       </layout.FlexCenter100>
       <layout.FlexColumnCenter100 style={{ padding: "80px" }}>
         <LoginHeader style={{ color: `${sVar.black80}` }}>Welcome back</LoginHeader>
-        <style.UserForm
-          onSubmit={(event) => {
-            event.preventDefault();
-            postUserInfoForSignUpFunction();
-          }}
-        >
+        <style.UserForm onSubmit={postUserInfoForSignUp}>
           <NameFloatInput name="email" type="email" changeHandler={changeHandler} value={email} isEmailInsert={isEmailInsert} />
           {isEmailInsert ? <NameFloatInput name="password" type="password" changeHandler={changeHandler} value={password} /> : null}
           <GreenBtn size="Big">Continue</GreenBtn>

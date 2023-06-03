@@ -9,12 +9,11 @@ import { useMutation } from "react-query";
 import { userAPI } from "../axios/api";
 import GreenBtn from "../components/GreenBtn";
 import { Link, useNavigate } from "react-router-dom";
-import { useRecoilState } from "recoil";
-import { userEmail, userPassword } from "../recoil/userInfo/atoms";
+import { encrypt, cryptoKey } from "../util/crypto";
 
 function SignUp() {
   const navigate = useNavigate();
-  const [email, setEmail] = useRecoilState(userEmail);
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   // 이메일이 올바르게 입력되면 true로 세팅됨
   const [isEmailInsert, setIsEmailInsert] = useState(false);
@@ -23,6 +22,7 @@ function SignUp() {
     onSuccess: async (res) => {
       console.log(res);
       alert("성공적으로 회원가입되었습니다..");
+      localStorage.setItem("USR", encrypt({ email, password }, cryptoKey));
       navigate("/login");
     },
   });
@@ -60,8 +60,8 @@ function SignUp() {
   };
 
   useEffect(() => {
-    if (sessionStorage.getItem("Email")) {
-      navigate("/layout");
+    if (sessionStorage.getItem("Login")) {
+      navigate("/");
     }
   });
 

@@ -44,10 +44,10 @@ export const userAPI = {
   login: async (userInfo) => await instance.post("/login", userInfo),
   signUp: async (userInfo) => await instance.post("/signup", userInfo),
   logout: async () => await instance.post("/logout", null),
+  getCredit: async () => await instance.get("/credit"),
 };
 export const gptAPI = {
   // layout (nav + main)에서 사용
-  getCredit: async () => await instance.get("/credit"),
   getChats: async () => await instance.get("/chat"),
   makeChat: async (ask) => await instance.post("/chat", ask),
 };
