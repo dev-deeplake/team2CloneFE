@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import * as sVar from "../styles/styleVariables";
 
-function Delete() {
+function Delete({id}) {
   const INIT_HEX = sVar.white70;
   const OVER_HEX = sVar.white100;
   const [fillColor, setFillColor] = useState(INIT_HEX);
@@ -13,7 +13,7 @@ function Delete() {
     setFillColor(INIT_HEX);
   };
   return (
-    <svg width="18" height="18" onMouseOver={onMouseOver} onMouseOut={onMouseOut}>
+    <svg id={id} width="18" height="18" onMouseOver={onMouseOver} onMouseOut={onMouseOut}>
       <g className="layer">
         <title>Layer 1</title>
         <path

@@ -22,17 +22,18 @@ function Layout() {
     return hex;
   };
 
-  const [response, setResponse] = useState(false);
-  const userHex = sessionStorage.getItem("userHex") ? sessionStorage.getItem("userHex") : sessionStorage.setItem("userHex", getHex());
-
+  // /api/chat으로의 get 요청 처리 및 해당 요청의 결과를 state로 관리하여 렌더링하는 파트 시작
+  const [listResponse, setListResponse] = useState(false);
+  const userHex = localStorage.getItem("userHex") ? localStorage.getItem("userHex") : localStorage.setItem("userHex", getHex());
+  const queryClient = useQueryClient();
   const {
     data: chats,
-    isLoading,
-    isError,
+    isLoading: listIsLoading,
+    isError: listIsError,
   } = useQuery(["chat"], gptAPI.getChats, {
     select: (data) => data.data.data,
     // refetchInterval: 5000,
-    enabled: !response,
+    enabled: !listResponse,
     onError: () => {
       alert("로그인이 필요합니다!");
       sessionStorage.removeItem("Login");
@@ -43,9 +44,8 @@ function Layout() {
     },
     refetchOnWindowFocus: false,
   });
-
-  if (!isLoading && isError) {
-    setResponse(true);
+  if (!listIsLoading && listIsError) {
+    setListResponse(true);
   }
 
   const { data: credit } = useQuery(["credit"], userAPI.getCredit, {
@@ -65,12 +65,62 @@ function Layout() {
     }
   }, [navigate, email]);
 
+  // /api/chat으로 post 요청을 보내 새로운 대화를 생성하고, 새로운 대화가 생성된 후 받아오는 response를 통해 chatId state 관리 및 응답 추출 관련 파트
+
+  // focusedChat: 어떤 대화방이 focused 되어있는지 보여주는 state
+  const [focusedChat, setFocusedChat] = useState(null)
+  const navOnClickHandler = (event) => {
+    setFocusedChat(event.target.id)
+    console.log(event.target.id)
+  }
+
+  const makeChatMutation = useMutation(gptAPI.makeChat, {
+    onSuccess: (res) => {
+      console.log("makeChatMutationRes", res);
+      queryClient.invalidateQueries(["chat"]);
+    },
+  });
+
+  const contChatMutation = useMutation(({ask, chatId}) => gptAPI.continueChat(ask, chatId), {
+    onSuccess: (res) => {
+      console.log(`contChatMutationRes:::`, res);
+      queryClient.invalidateQueries(["conversation"]);
+    }
+  })
+
+  const handleNewSubmit = async (inputValue) => {
+    const reqBody = { ask: inputValue } // 질문을 서버로 보내기 위한 요청 본문
+    const reqResponse = await makeChatMutation.mutateAsync(reqBody);
+    const reqAnswer = reqResponse.data
+    // 응답 코드 관리
+    let code = reqAnswer.code
+
+    // chatId 설정
+    if (reqAnswer.data.chatId != focusedChat) { setFocusedChat(reqAnswer.data.chatId) }
+    
+    console.log(`chatId::: ${reqAnswer.data.chatId}`)
+    console.log(`answer::: ${reqAnswer.data.answer.content}`)
+
+    // makeChatMutation.mutate({ ask: inputValue });
+    // setInputValue("");
+
+  };
+
+  const handleReplSubmit = async (inputValue, chatId) => {
+    // console.log("여기는 들어옴!")
+    const reqBody = { ask: inputValue }
+    const reqResponse = await contChatMutation.mutateAsync({ ask: reqBody, chatId });
+    const reqAnswer = reqResponse.data
+    console.log(reqAnswer)
+  }
+
+
   return (
     <>
       {!!chats ? (
         <layout.Flex100>
-          <Nav email={email} hex={userHex} chats={chats} />
-          <Main />
+          <Nav navOnClick={navOnClickHandler} focusedChat={focusedChat} email={email} hex={userHex} chats={chats} />
+          <Main focusedChat={focusedChat} handleSubmit={focusedChat === null ? handleNewSubmit : handleReplSubmit} />
         </layout.Flex100>
       ) : (
         <div>Loading...</div>
