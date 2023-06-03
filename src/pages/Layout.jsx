@@ -4,13 +4,13 @@ import Main from "../components/Main";
 import * as layout from "../styles/layouts";
 import { useQuery, useQueryClient, useMutation } from "react-query";
 import { cryptoKey, decrypt } from "../util/crypto";
-import { gptAPI } from "../axios/api";
+import { gptAPI, userAPI } from "../axios/api";
 import { useNavigate } from "react-router-dom";
 
 function Layout() {
   const navigate = useNavigate();
 
-  const email = localStorage.getItem("USR") ? decrypt(localStorage.getItem("USR"), cryptoKey).email : "example@naver.com";
+  const email = !!localStorage.getItem("USR") ? decrypt(localStorage.getItem("USR"), cryptoKey).email : "example@naver.com";
 
   const hexValues = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "A", "B", "C", "D", "E"]; // F는 흐린 계열이 나오지 않게 하기 위해 제외
   const getHex = () => {
@@ -47,6 +47,13 @@ function Layout() {
   if (!isLoading && isError) {
     setResponse(true);
   }
+
+  const { data: credit } = useQuery(["credit"], userAPI.getCredit, {
+    onSuccess: (res) => {
+      console.log(res);
+    },
+    refetchOnWindowFocus: false,
+  });
 
   useEffect(() => {
     if (email === "example@naver.com") {

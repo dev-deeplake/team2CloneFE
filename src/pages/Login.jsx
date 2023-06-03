@@ -38,11 +38,16 @@ function Login() {
         // domain: "gptclone.cz", // 전송되어질 도메인(서버 도메인)
         expires: setCookieExpireDay(1), // 만료 시간 설정 시 브라우저 종료 시 삭제되지 않음 : 향후 자동롤그인 기능 구현 시 쿠키 사용할 예정
       });
+
       localStorage.setItem("USR", encrypt({ email, password }, cryptoKey)); // email을 암호화하여 sessionStorage에 저장
       sessionStorage.setItem("Login", true);
       sessionStorage.removeItem("Logout");
+
       alert(res.data["message"]);
       navigate("/");
+    },
+    onError: (err) => {
+      alert(err.response.data.message);
     },
   });
 
