@@ -8,6 +8,7 @@ const instance = axios.create({
     // withCredentials: true,
     // "Content-Type": "application/json",
   },
+  timeout: 60000,
 });
 // 요청 인터셉트
 // 설정된 기능 : 인터셉트하여 console에 찍어줌

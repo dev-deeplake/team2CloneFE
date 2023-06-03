@@ -35,11 +35,13 @@ function Layout() {
     enabled: !response,
     onError: () => {
       alert("로그인이 필요합니다!");
+      sessionStorage.removeItem("Login");
       navigate("/login");
     },
     onSuccess: () => {
       sessionStorage.setItem("Login", true);
     },
+    refetchOnWindowFocus: false,
   });
 
   if (!isLoading && isError) {
@@ -48,9 +50,10 @@ function Layout() {
 
   useEffect(() => {
     if (email === "example@naver.com") {
+      sessionStorage.removeItem("Login");
       navigate("/login");
     }
-  });
+  }, [navigate, email]);
 
   return (
     <>
