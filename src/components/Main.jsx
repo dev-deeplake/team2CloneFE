@@ -22,8 +22,6 @@ function Main({handleSubmit, focusedChat}) {
       enabled: !!focusedChat,
       // select: (data) => data.data.data
     })
-    console.log(`focusedChat: ${focusedChat}`)
-    console.log(conv)
 
   return (
     <layout.FlexColumnRowCenter100>
