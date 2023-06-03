@@ -53,6 +53,9 @@ function Layout() {
       sessionStorage.removeItem("Login");
       navigate("/login");
     }
+    if (!!sessionStorage.getItem("Logout")) {
+      navigate("/login");
+    }
   }, [navigate, email]);
 
   return (

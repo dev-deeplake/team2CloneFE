@@ -29,6 +29,7 @@ function UserMenu({ iconFront, iconTailOne, iconTailTwo, email }) {
     onSuccess: async (res) => {
       console.log(res);
       sessionStorage.removeItem("Login");
+      sessionStorage.setItem("Logout", true);
       alert(res.data["message"]);
       navigate("/home");
     },
