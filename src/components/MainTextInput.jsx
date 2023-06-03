@@ -8,7 +8,7 @@ import { useState, useRef, useEffect } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { gptAPI } from "../axios/api";
 
-function MainTextInput() {
+function MainTextInput({ handleSubmit, focusedChat }) {
   const INIT_HEIGHT = "24px";
   const INIT_INPUT_VALUE = "";
   const [inputHeight, setInputHeight] = useState(INIT_HEIGHT);
@@ -16,18 +16,7 @@ function MainTextInput() {
   const [lineCount, setLineCount] = useState(0);
   const textAreaRef = useRef(null);
   const queryClient = useQueryClient();
-  const makeChatMutation = useMutation(gptAPI.makeChat, {
-    onSuccess: (res) => {
-      console.log("res", res);
-      queryClient.invalidateQueries(["chat"]);
-    },
-  });
 
-  const handleSubmit = () => {
-    // console.log(inputValue)
-    makeChatMutation.mutate({ ask: inputValue });
-    setInputValue("");
-  };
 
   useEffect(() => {
     const countLines = () => {
@@ -48,7 +37,7 @@ function MainTextInput() {
   return (
     <style.MainInputContainer>
       <style.MainInput onChange={(event) => setInputValue(event.target.value)} value={inputValue} height={inputHeight} placeholder="send a message..."></style.MainInput>
-      <Send isContent={!!inputValue} handleSubmit={handleSubmit} />
+      <Send isContent={!!inputValue} handleSubmit={focusedChat === null ? (() => handleSubmit(inputValue)) : (() => handleSubmit(inputValue, focusedChat))} />
     </style.MainInputContainer>
   );
 }

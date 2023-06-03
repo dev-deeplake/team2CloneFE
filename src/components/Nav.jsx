@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import IconUsingBtn from "./IconUsingBtn";
 import * as layout from "../styles/layouts";
 import * as sVar from "../styles/styleVariables";
@@ -14,7 +14,7 @@ import UserMenu from "./UserMenu";
 
 // email => redux 설정
 // user email에 따라 랜덤 아이콘 만들기 구현
-function Nav({ email, hex, chats }) {
+function Nav({ email, hex, chats, navOnClick, focusedChat }) {
   console.log(chats)
   console.log(Object.keys(chats))
 
@@ -32,18 +32,49 @@ function Nav({ email, hex, chats }) {
               return (
                 <layout.FlexColumnCenter key={group} style={{ alignItems: "flex-start" }}>
                   {!!(chats[group].length) && (<style.GroupText>{group}</style.GroupText>)}
-                  {!!(chats[group].length) && chats[group].map((entry) => (
+                  {!!(chats[group].length) && chats[group].map((entry) => {
+                    if (focusedChat == entry["chatId"]) {
+                      return (
+                          <IconUsingBtn
+                            onClick={navOnClick}
+                            customStyle={{boxShadow: `100px 100px ${sVar.darkLightened} inset`}}
+                            textWidth="170px"
+                            iconFront={<Chat id={entry["chatId"]} style={{ transform: "scaleX(-1)", marginRight: "10px" }} />}
+                            iconTailOne={<Modify id={entry["chatId"]} style={{ marginRight: "10px" }} />}
+                            iconTailTwo={<Delete id={entry["chatId"]} />}
+                            key={entry["chatId"]}
+                            id={entry["chatId"]}
+                          >
+                            {entry["chatName"]}
+                        </IconUsingBtn>
+                      )
+                    } else {
+                      return (
+                        <IconUsingBtn
+                          onClick={navOnClick}
+                          textWidth="170px"
+                          iconFront={<Chat id={entry["chatId"]} style={{ transform: "scaleX(-1)", marginRight: "10px" }} />}
+                          key={entry["chatId"]}
+                          id={entry["chatId"]}
+                        >
+                          {entry["chatName"]}
+                      </IconUsingBtn>
+                      )
+                    }
+                  })}
+                  {/* {!!(chats[group].length) && chats[group].map((entry) => (
                     <IconUsingBtn
-                      // onClickHandler={logoutMutation}
+                      onClick={navOnClickHandler}
                       textWidth="170px"
-                      iconFront={<Chat style={{ transform: "scaleX(-1)", marginRight: "10px" }} />}
-                      iconTailOne={<Modify style={{ marginRight: "10px" }} />}
-                      iconTailTwo={<Delete />}
+                      iconFront={<Chat id={entry["chatId"]} style={{ transform: "scaleX(-1)", marginRight: "10px" }} />}
+                      iconTailOne={<Modify id={entry["chatId"]} style={{ marginRight: "10px" }} />}
+                      iconTailTwo={<Delete id={entry["chatId"]} />}
                       key={entry["chatId"]}
+                      id={entry["chatId"]}
                     >
                       {entry["chatName"]}
                     </IconUsingBtn>
-                  ))}
+                  ))} */}
                 </layout.FlexColumnCenter>
               );
             })

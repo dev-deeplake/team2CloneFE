@@ -106,6 +106,20 @@ export const UserIcon = styled(layout.FlexCenter100)`
   color: ${sVar.white80};
   font-size: 0.1rem;
   border-radius: 0.1rem;
+  /* ${props => {
+    let width = "20px"
+    let height = "20px"
+    if (!!props.width) {
+      width = `${props.width}px`
+    }
+    if (!!props.height) {
+      height = `${props.height}px`
+    }
+    return `
+      width: ${width};
+      height: ${height};
+    `
+  }} */
 `
 
 // logout 메뉴 스타일링
@@ -126,4 +140,29 @@ export const SendContainer = styled.div`
       return `background: rgba(171, 104, 255, 1);`
     }
   }}
+`
+
+// main conversation 스타일링
+export const ConvContainer = styled(layout.FlexCenter100)`
+  padding: 24px 0;
+  border-bottom: 1px solid ${sVar.lineColor};
+  ${props => {
+    if (!!props.isGPT) {
+      return `
+        background: ${sVar.bgReplColor};
+      `
+    }
+  }}
+`
+export const ConvEntry = styled(layout.FlexCenter)`
+  width: 768px;
+  font-size: 11pt;
+  line-height: 1.8;
+  display: grid;
+  grid-template-columns: 1fr 14fr;
+  > p {
+        font-size: 11pt;
+        line-height: 1.8;
+        margin-bottom: 20px;
+  }
 `

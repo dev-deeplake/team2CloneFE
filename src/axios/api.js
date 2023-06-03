@@ -8,6 +8,7 @@ const instance = axios.create({
     // withCredentials: true,
     // "Content-Type": "application/json",
   },
+  timeout: 60000, //axios timeout 추가
 });
 // 요청 인터셉트
 // 설정된 기능 : 인터셉트하여 console에 찍어줌
@@ -49,6 +50,8 @@ export const userAPI = {
 export const gptAPI = {
   // layout (nav + main)에서 사용
   getChats: async () => await instance.get("/chat"),
+  getConvs: async (chatId) => await instance.get(`/chat/${chatId}`),
   makeChat: async (ask) => await instance.post("/chat", ask),
+  continueChat: async (ask, chatId) => await instance.post(`chat/${chatId}`, ask)
 };
 export default instance;
