@@ -8,8 +8,10 @@ import { gptAPI } from "../axios/api";
 import { useNavigate } from "react-router-dom";
 
 function Layout() {
-  const email = decrypt(localStorage.getItem("USR"), cryptoKey).email; // 암호화된 Email 복호화
-  const INPUT_INIT_STATE = "";
+  const navigate = useNavigate();
+
+  const email = localStorage.getItem("USR") ? decrypt(localStorage.getItem("USR"), cryptoKey).email : "example@naver.com";
+
   const hexValues = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "A", "B", "C", "D", "E"]; // F는 흐린 계열이 나오지 않게 하기 위해 제외
   const getHex = () => {
     let hex = "#";
@@ -20,14 +22,9 @@ function Layout() {
     return hex;
   };
 
-  const navigate = useNavigate();
-
-  const [inputContent, setInputContent] = useState("안녕하세요?");
   const [response, setResponse] = useState(false);
   const userHex = sessionStorage.getItem("userHex") ? sessionStorage.getItem("userHex") : sessionStorage.setItem("userHex", getHex());
 
-  const queryClient = useQueryClient();
-  // const { data: credits } = useQuery({ queryKey: ["credit"], queryFn: gptAPI.getCredit })
   const {
     data: chats,
     isLoading,
@@ -36,16 +33,24 @@ function Layout() {
     select: (data) => data.data.data,
     // refetchInterval: 5000,
     enabled: !response,
+    onError: () => {
+      alert("로그인이 필요합니다!");
+      navigate("/login");
+    },
+    onSuccess: () => {
+      sessionStorage.setItem("Login", true);
+    },
   });
+
   if (!isLoading && isError) {
     setResponse(true);
-    sessionStorage.setItem("Login", true);
   }
 
-  if (isError) {
-    alert("로그인이 필요합니다!");
-    navigate("/login");
-  }
+  useEffect(() => {
+    if (email === "example@naver.com") {
+      navigate("/login");
+    }
+  });
 
   return (
     <>
