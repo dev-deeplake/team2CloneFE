@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import * as layout from "../styles/layouts";
 import * as sVar from "../styles/styleVariables";
 
@@ -201,14 +201,15 @@ export const LogoutMenu = styled(IconUsingBtn)`
 
 // send icon container 스타일링
 export const SendContainer = styled.div`
-  margin: 0 10px;
+  margin: 0 20px 0 10px;
   padding: 6px;
   border-radius: 6px;
   cursor: pointer;
   ${props => {
     if (!!props.isContent) {
       // return `background: rgba(171, 104, 255, 1);`
-      return `background: #19C37D;`
+      // return `background: #19C37D;`
+      return `background: ${props.iconColor};`
     }
   }}
 `
@@ -255,4 +256,21 @@ export const MainDivWhite = styled.div`
   background: white;
   height: 140px;
   background: linear-gradient(to top, #fff, #fff 70%, transparent);
+`
+
+// 응답 대기중의 커서 깜빡임 구현 animation
+export const blink = keyframes`
+  0% {opacity: 1;}
+  50% {opacity: 0;} 
+  100% {opacity: 1}
+`
+// 응답시 보여줄 커서
+export const Cursor = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 3px;
+  height: 15px;
+  background-color: ${sVar.black80};
+  color: transparent;
+  animation: 1s ${blink} step-end infinite;
 `

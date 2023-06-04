@@ -49,7 +49,26 @@ function Main({ handleSubmit, focusedChat }) {
       {console.log(`conv::: ${conv}`)}
       {console.log(conv !== undefined)}
       {conv !== undefined ? (
-        conv.map((conversation) => {
+        conv.map((conversation, idx) => {
+          if (idx === conv.length - 1 && conversation.isGPT === false) {
+            return (
+              <>
+                <Conversation
+                  isGPT={conversation.isGPT}
+                  convId={conversation.conversationId}
+                >
+                  {conversation.conversation}
+                </Conversation>
+                <Conversation
+                  isGPT="loading"
+                  convId="loading"
+                >
+                </Conversation>
+              </>
+            )
+          }
+          console.log(conv)
+          console.log(idx)
           return (
             <Conversation
               isGPT={conversation.isGPT}
