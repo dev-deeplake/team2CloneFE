@@ -40,6 +40,10 @@ export const FlexColumnCenter = styled(FlexColumn)`
     justify-content: center;
 `
 
+export const FlexColumnCenterRow = styled(FlexColumn)`
+    align-items: center;
+`
+
 export const FlexColumnRowCenter100 = styled(FlexColumn100)`
     align-items: center;
 `

@@ -32,8 +32,8 @@ function Nav({ email, hex, chats, navOnClick, newChatOnClick, focusedChat }) {
 
   return (
           <style.NavContainer>
-            <layout.FlexColumnCenter100 style={{height: "50px"}}>
-              <IconUsingBtn onClick={newChatOnClick} customStyle={{ border: `1px solid ${sVar.white20}`, width: "100%" }} iconFront={<FontAwesomeIcon icon={faPlus} size="sm" style={{ color: "#ffffff", padding: "0 10px 0 2px" }} />}>
+            <layout.FlexColumnCenter100 style={{height: "50px", position: "absolute", top: "10px", width: "260px"}}>
+              <IconUsingBtn onClick={newChatOnClick} customStyle={{ border: `1px solid ${sVar.white20}`, width: "240px" }} iconFront={<FontAwesomeIcon icon={faPlus} size="sm" style={{ color: "#ffffff", padding: "0 10px 0 2px" }} />}>
                 New chat
               </IconUsingBtn>
             </layout.FlexColumnCenter100>
@@ -95,7 +95,7 @@ function Nav({ email, hex, chats, navOnClick, newChatOnClick, focusedChat }) {
               }
             </style.HeadFootBtnContainer>
 
-          <layout.FlexColumnCenter100 style={{height: "50px"}}>
+          <layout.FlexColumnCenter100 style={{height: "50px", position:"fixed", bottom: "0px", width: "260px"}}>
             <UserMenu iconFront={<UserIcon email={email} hex={hex} />} iconTailOne={<div style={{ width: "20px" }}></div>} iconTailTwo={<Dots />} email={email} />
           </layout.FlexColumnCenter100>
         </style.NavContainer>

@@ -2,9 +2,9 @@ import React from 'react'
 import * as style from "../styles/styles"
 import * as sVar from "../styles/styleVariables"
 
-function Send({handleSubmit, isContent}) {
+function Send({handleSubmit, isContent, iconColor}) {
   return (
-    <style.SendContainer onClick={handleSubmit} isContent={isContent}>
+    <style.SendContainer iconColor={iconColor} onClick={handleSubmit} isContent={isContent}>
         <svg width="18" height="18">
             <g className="layer">
                 <title>Layer 1</title>
