@@ -29,10 +29,6 @@ function Main({ handleSubmit, focusedChat }) {
         // 마지막 대화 객체의 isGPT가 true이면 다시 가져오지 않기
         return data && data[data.length - 1].isGPT ? false : 2000;
       },
-      onError: (error) => {
-        alert(`오늘 사용가능한 횟수를 초과하였습니다.
-        내일 다시 시도해 주십시오.`);
-      },
     }
   );
 
