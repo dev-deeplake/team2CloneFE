@@ -29,7 +29,7 @@ function Main({ handleSubmit, focusedChat }) {
   );
 
   return (
-    <layout.FlexColumnRowCenter100>
+    <style.MainContainer>
       <style.MainHeader
         style={{
           color: `${sVar.groupTextColor}`,
@@ -45,7 +45,21 @@ function Main({ handleSubmit, focusedChat }) {
       {/* 새 대화가 시작 되어야 출력되는 글-댓글 형식의 post */}
       {console.log(`conv::: ${conv}`)}
       {console.log(conv !== undefined)}
-        {conv !== undefined ? (
+      {conv !== undefined ? (
+        conv.map((conversation) => {
+          return (
+            <Conversation isGPT={conversation.isGPT} convId={conversation.conversationId}>
+              {conversation.conversation}
+            </Conversation>
+          )
+        })
+        ) : (
+        <style.MainEmpty>
+          <h1>ChapGPT</h1>
+        </style.MainEmpty>)
+      }
+      <style.MainFinalBox></style.MainFinalBox>
+        {/* {conv !== undefined ? (
           <style.MainConv>
             {conv.map((conversation) => {
               console.log(conversation);
@@ -55,18 +69,20 @@ function Main({ handleSubmit, focusedChat }) {
                 </Conversation>
               );
             })}
+              <style.MainFinalBox></style.MainFinalBox>
           </style.MainConv>
           ) : (
             <style.MainEmpty>
               <h1>ChapGPT</h1>
             </style.MainEmpty>
-          ) }
+          ) } */}
           {/* 새 대화가 시작되지 않았으면 화면 가운데에 ChatGPT 글자 띄우기 */}
-      <style.MainFooter>
-        <MainTextInput focusedChat={focusedChat} handleSubmit={handleSubmit} />
-        <p style={{position: "fixed", bottom: "24px", fontSize: "7.7pt", color:`${sVar.black60}`}}>ChapGPT may produce inaccurate information about people, places, or facts. <u>ChapGPT June 04 Version</u></p>
-      </style.MainFooter>
-    </layout.FlexColumnRowCenter100>
+        <layout.FlexColumnCenterRow>
+          <MainTextInput focusedChat={focusedChat} handleSubmit={handleSubmit} />
+          <p style={{position: "fixed", bottom: "24px", fontSize: "7.7pt", color:`${sVar.black60}`, zIndex: "1"}}>ChapGPT may produce inaccurate information about people, places, or facts. <u>ChapGPT June 04 Version</u></p>
+          <style.MainDivWhite></style.MainDivWhite>
+        </layout.FlexColumnCenterRow>
+    </style.MainContainer>
   );
 }
 

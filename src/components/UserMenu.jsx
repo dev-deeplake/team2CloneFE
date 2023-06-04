@@ -41,8 +41,9 @@ function UserMenu({ iconFront, iconTailOne, iconTailTwo, email }) {
         style={{
           // position: "fixed",
           // bottom: "0",
-          width: "252px",
+          width: "inherit",
           paddingTop: "4px",
+          paddingBottom: "16px",
           borderTop: `1px solid ${sVar.white20}`,
           background: `${sVar.darkSide}`,
         }}

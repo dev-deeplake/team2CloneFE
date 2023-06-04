@@ -27,7 +27,7 @@ export const UserForm = styled(layout.FlexColumnForm)`
 // 이하 메인 대화 화면에서 사용되는 styles
 // icon이 들어가는 버튼의 스타일링
 export const IconUsingBtn = styled.button`
-  width: 244px;
+  width: 240px;
   padding: 12px;
   margin: 5px 0 0 0;
   line-height: 1.25rem;
@@ -47,6 +47,12 @@ export const IconUsingBtn = styled.button`
     font-size: 0.875rem;
   }
 `;
+
+// main화면의 container 스타일링
+export const MainContainer = styled(layout.FlexColumnRowCenter100)`
+  width: calc(100vw - 260px);
+  margin-left: 260px;
+`
 // main 화면에서 GPT 모델 노출 부분의 스타일링
 export const MainHeader = styled(layout.FlexCenter100)`
     background-color: ${sVar.bgReplColor};
@@ -67,12 +73,19 @@ export const MainEmpty = styled(layout.FlexColumnCenter)`
     font-size: 2.25rem;
   }
 `
-// main 화면의 흰색 여백 영역 스타일링 (inputarea가 이 안에 포함됨)
-export const MainFooter = styled(layout.FlexColumnRowCenter100)`
-  height: 200px;
+// main 화면의 흰색 여백 영역 스타일링
+export const MainFinalBox = styled(layout.FlexColumnRowCenter100)`
+  height: 12rem;
+  flex-shrink: 0;
+  background-image: linear-gradient(180deg,hsla(0,0%,100%,0) 13.94%,#fff 54.73%);
+`
+export const MainFooter = styled(layout.FlexColumnCenterRow)`
+  background-image: linear-gradient(180deg,hsla(0,0%,100%,0) 13.94%,#fff 54.73%);
+  background-color: transparent;
 `
 // main 화면 아래쪽의 inputarea 스타일링
 export const MainInputContainer = styled(layout.FlexCenterRow100)`
+    background: white;
     max-width: 672px;
     width: 100%;
     min-height: 50px;
@@ -84,6 +97,7 @@ export const MainInputContainer = styled(layout.FlexCenterRow100)`
     bottom: 52px;
     padding: 1rem 0 1rem 1rem;
     flex-grow: 1;
+    z-index: 1;
     &:after, &:before {
       border: 0 solid #d9d9e3;
     }
@@ -101,12 +115,15 @@ export const MainInput = styled.textarea`
   overflow-y: hidden;
   padding-right: 3rem;
   padding-left: 0;
-  background-color: transparent;
+  /* background-color: transparent; */
   resize: none;
   line-height: 1.5em;
   border-width: 0;
   font-family: inherit;
   font-size: 0.9rem;
+  &:after, &:before {
+      border: 0 solid #d9d9e3;
+    }
   &:focus {
     outline: 0;
   }
@@ -125,16 +142,21 @@ export const MainInput = styled.textarea`
 export const NavContainer = styled(layout.FlexColumnCenter)`
     min-width: 260px;
     padding: 10px;
+    z-index: 2;
     /* height: 100vh; */
     justify-content: flex-start;
     background-color: ${sVar.darkSide};
+    position: fixed;
+    height: 100vh;
 `
 
 // nav 대화 리스트 레이아웃
 export const HeadFootBtnContainer = styled(layout.FlexColumn100)`
     overflow-y: auto;
     overflow-x: hidden;
-    height: calc(100vh - 120px);
+    position: relative;
+    top: 60px;
+    height: calc(100vh - 140px);
 `
 
 // nav group text 스타일링
@@ -222,4 +244,15 @@ export const ConvEntry = styled(layout.FlexCenter)`
       max-width: 716px;
     }
   }
+`
+
+// main 마지막의 div white
+export const MainDivWhite = styled.div`
+  width: calc(100vw - 260px);
+  position: fixed;
+  bottom: 0;
+  z-index: 0;
+  background: white;
+  height: 140px;
+  background: linear-gradient(to top, #fff, #fff 70%, transparent);
 `
