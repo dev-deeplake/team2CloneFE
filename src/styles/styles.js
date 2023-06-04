@@ -52,27 +52,68 @@ export const MainHeader = styled(layout.FlexCenter100)`
     background-color: ${sVar.bgReplColor};
     color: ${sVar.black70};
 `
+// main 화면의 대화 컨테이너 스타일링 - 대화가 있을 때
+export const MainConv = styled(layout.FlexColumnRowCenter100)`
+  height: calc(100vh - (45px + 200px));
+  overflow-y: scroll;
+`
+// main 화면의 컨테이너 스타일링 - 대화가 없을 때
+export const MainEmpty = styled(layout.FlexColumnCenter)`
+  height: calc(100vh - (45px + 200px));
+  > h1 {
+    margin-top: 5rem;
+    color: rgba(217, 217, 227, 0.9);
+    font-weight: 600;
+    font-size: 2.25rem;
+  }
+`
+// main 화면의 흰색 여백 영역 스타일링 (inputarea가 이 안에 포함됨)
+export const MainFooter = styled(layout.FlexColumnRowCenter100)`
+  height: 200px;
+`
 // main 화면 아래쪽의 inputarea 스타일링
 export const MainInputContainer = styled(layout.FlexCenterRow100)`
     max-width: 672px;
     width: 100%;
     min-height: 50px;
-    border-radius: 4px;
-    box-shadow: 1px 1px ${sVar.black05};
+    border-radius: 0.75rem;
+    border-width: 1px;
+    border-color: ${sVar.black10};
+    box-shadow: 0 0 15px ${sVar.black10};
     position: fixed;
     bottom: 52px;
-    border: 1px solid black;
-    padding: 7px 0 7px 16px;
+    padding: 1rem 0 1rem 1rem;
+    flex-grow: 1;
+    &:after, &:before {
+      border: 0 solid #d9d9e3;
+    }
+    /* padding: 7px 0 7px 16px; */
 `
 export const MainInput = styled.textarea`
-  box-sizing: border-box;
+  /* box-sizing: border-box; */
+  color: ${sVar.black80};
   display: flex;
   max-width: 654px;
-  width: 92%;
-  padding: 4px;
+  width: 100%;
   flex-wrap: wrap;
   max-height: 200px;
+  height: 24px;
+  overflow-y: hidden;
+  padding-right: 3rem;
+  padding-left: 0;
+  background-color: transparent;
+  resize: none;
   line-height: 1.5em;
+  border-width: 0;
+  font-family: inherit;
+  font-size: 0.9rem;
+  &:focus {
+    outline: 0;
+  }
+  &::placeholder {
+    color: ${sVar.black40};
+    font-weight: 400;
+  }
   ${props => {
     if (!!props.height) {
       return `height: ${props.height};`
@@ -138,13 +179,14 @@ export const LogoutMenu = styled(IconUsingBtn)`
 
 // send icon container 스타일링
 export const SendContainer = styled.div`
-  margin-left: 10px;
+  margin: 0 10px;
   padding: 6px;
   border-radius: 6px;
   cursor: pointer;
   ${props => {
     if (!!props.isContent) {
-      return `background: rgba(171, 104, 255, 1);`
+      // return `background: rgba(171, 104, 255, 1);`
+      return `background: #19C37D;`
     }
   }}
 `
@@ -168,8 +210,16 @@ export const ConvEntry = styled(layout.FlexCenter)`
   display: grid;
   grid-template-columns: 1fr 14fr;
   > p {
-        font-size: 11pt;
-        line-height: 1.8;
-        margin-bottom: 20px;
+
+  }
+  > div {
+    max-width: 716px;
+    > p {
+      width: inherit;
+      font-size: 11pt;
+      line-height: 1.8;
+      margin-bottom: 20px;
+      max-width: 716px;
+    }
   }
 `

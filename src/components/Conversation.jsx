@@ -10,7 +10,8 @@ function Conversation({ isGPT, children }) {
     <style.ConvContainer isGPT={isGPT}>
       <style.ConvEntry>
         {!!isGPT ? <GptIcon /> : <UserIcon width="30px" height="30px" font="9pt" email={decrypt(localStorage.getItem("USR"), cryptoKey).email} hex={localStorage.getItem("userHex")} />}
-        {!!isGPT ? <div dangerouslySetInnerHTML={{ __html: marked(children) }} /> : children}
+        {/* { children } */}
+        {!!isGPT ? <div dangerouslySetInnerHTML={{ __html: marked(children) }} /> : <div>{children}</div>}
         {/* {!!isGPT ? marked(children) : children} */}
       </style.ConvEntry>
     </style.ConvContainer>

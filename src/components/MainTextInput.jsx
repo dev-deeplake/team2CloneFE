@@ -36,7 +36,7 @@ function MainTextInput({ handleSubmit, focusedChat }) {
   }, [inputValue]);
   return (
     <style.MainInputContainer>
-      <style.MainInput onChange={(event) => setInputValue(event.target.value)} value={inputValue} height={inputHeight} placeholder="send a message..."></style.MainInput>
+      <style.MainInput onChange={(event) => setInputValue(event.target.value)} value={inputValue} height={inputHeight} placeholder="Send a message..."></style.MainInput>
       <Send isContent={!!inputValue} handleSubmit={focusedChat === null ? (() => handleSubmit(inputValue)) : (() => handleSubmit(inputValue, focusedChat))} />
     </style.MainInputContainer>
   );
