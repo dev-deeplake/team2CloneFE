@@ -23,8 +23,11 @@ function Main({ handleSubmit, focusedChat }) {
     },
     {
       enabled: !!focusedChat,
-      refetchInterval: 2000,
-      // select: (data) => data.data.data
+      // refetchInterval: 2000,
+      refetchInterval: (data) => {
+        // 마지막 대화 객체의 isGPT가 true이면 다시 가져오지 않기
+        return data && data[data.length - 1].isGPT ? false : 2000;
+      },
     }
   );
 
@@ -48,18 +51,21 @@ function Main({ handleSubmit, focusedChat }) {
       {conv !== undefined ? (
         conv.map((conversation) => {
           return (
-            <Conversation isGPT={conversation.isGPT} convId={conversation.conversationId}>
+            <Conversation
+              isGPT={conversation.isGPT}
+              convId={conversation.conversationId}
+            >
               {conversation.conversation}
             </Conversation>
-          )
+          );
         })
-        ) : (
+      ) : (
         <style.MainEmpty>
           <h1>ChapGPT</h1>
-        </style.MainEmpty>)
-      }
+        </style.MainEmpty>
+      )}
       <style.MainFinalBox></style.MainFinalBox>
-        {/* {conv !== undefined ? (
+      {/* {conv !== undefined ? (
           <style.MainConv>
             {conv.map((conversation) => {
               console.log(conversation);
@@ -76,12 +82,23 @@ function Main({ handleSubmit, focusedChat }) {
               <h1>ChapGPT</h1>
             </style.MainEmpty>
           ) } */}
-          {/* 새 대화가 시작되지 않았으면 화면 가운데에 ChatGPT 글자 띄우기 */}
-        <layout.FlexColumnCenterRow>
-          <MainTextInput focusedChat={focusedChat} handleSubmit={handleSubmit} />
-          <p style={{position: "fixed", bottom: "24px", fontSize: "7.7pt", color:`${sVar.black60}`, zIndex: "1"}}>ChapGPT may produce inaccurate information about people, places, or facts. <u>ChapGPT June 04 Version</u></p>
-          <style.MainDivWhite></style.MainDivWhite>
-        </layout.FlexColumnCenterRow>
+      {/* 새 대화가 시작되지 않았으면 화면 가운데에 ChatGPT 글자 띄우기 */}
+      <layout.FlexColumnCenterRow>
+        <MainTextInput focusedChat={focusedChat} handleSubmit={handleSubmit} />
+        <p
+          style={{
+            position: "fixed",
+            bottom: "24px",
+            fontSize: "7.7pt",
+            color: `${sVar.black60}`,
+            zIndex: "1",
+          }}
+        >
+          ChapGPT may produce inaccurate information about people, places, or
+          facts. <u>ChapGPT June 04 Version</u>
+        </p>
+        <style.MainDivWhite></style.MainDivWhite>
+      </layout.FlexColumnCenterRow>
     </style.MainContainer>
   );
 }
