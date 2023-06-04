@@ -10,9 +10,7 @@ import { useNavigate } from "react-router-dom";
 function Layout() {
   const navigate = useNavigate();
 
-  const email = !!localStorage.getItem("USR")
-    ? decrypt(localStorage.getItem("USR"), cryptoKey).email
-    : "example@naver.com";
+  const email = !!localStorage.getItem("USR") ? decrypt(localStorage.getItem("USR"), cryptoKey).email : "example@naver.com";
 
   const hexValues = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "A", "B", "C", "D", "E"]; // F는 흐린 계열이 나오지 않게 하기 위해 제외
   const getHex = () => {
@@ -26,38 +24,26 @@ function Layout() {
 
   // /api/chat으로의 get 요청 처리 및 해당 요청의 결과를 state로 관리하여 렌더링하는 파트 시작
   const [listResponse, setListResponse] = useState(false);
-  const userHex = localStorage.getItem("userHex")
-    ? localStorage.getItem("userHex")
-    : localStorage.setItem("userHex", getHex());
+  const userHex = localStorage.getItem("userHex") ? localStorage.getItem("userHex") : localStorage.setItem("userHex", getHex());
   const queryClient = useQueryClient();
   const {
-      data: chats,
-      isLoading: listIsLoading,
-      isError: listIsError,
-    } = useQuery(["chat"], gptAPI.getChats, {
-      select: (data) => data.data.data,
-      // refetchInterval: 5000,
-      enabled: !listResponse,
-      onError: () => {
-        alert("로그인이 필요합니다!");
-        sessionStorage.removeItem("Login");
-        navigate("/login");
-      },
-      onSuccess: () => {
-        sessionStorage.setItem("Login", true);
-      },
-      refetchOnWindowFocus: false,
-    });
-
-  if (!listIsLoading && listIsError) {
-    setListResponse(true);
-  }
-
-  const { data: credit } = useQuery(["credit"], userAPI.getCredit, {
-    onSuccess: (res) => {
-      console.log(res);
+    data: chats,
+    isLoading: listIsLoading,
+    isError: listIsError,
+  } = useQuery(["chat"], gptAPI.getChats, {
+    select: (data) => data.data.data,
+    // refetchInterval: 5000,
+    enabled: !listResponse,
+    onError: () => {
+      alert("로그인이 필요합니다!");
+      sessionStorage.removeItem("Login");
+      navigate("/login");
+    },
+    onSuccess: () => {
+      sessionStorage.setItem("Login", true);
     },
     refetchOnWindowFocus: false,
+    retry: 1,
   });
 
   useEffect(() => {
@@ -83,32 +69,46 @@ function Layout() {
     onSuccess: (res) => {
       console.log("makeChatMutationRes", res);
       queryClient.invalidateQueries(["chat"]);
+      queryClient.invalidateQueries(["credit"]);
+    },
+    onError: (err) => {
+      console.log("makeChatMutation error:", err);
+      if (err.response.status === 402) {
+        alert(
+          ` 사용가능한 횟수를 모두 소진하였습니다.
+사용가능 횟수는 매일 10회씩 충전됩니다.`
+        );
+      }
     },
   });
 
-  const contChatMutation = useMutation(
-    ({ ask, chatId }) => gptAPI.continueChat(ask, chatId),
-    {
-      onSuccess: (res) => {
-        console.log(`contChatMutationRes:::`, res);
-        queryClient.invalidateQueries(["conversation"]);
-      },
-      onError: (err) => { // 에러가 발생하면 해당 채팅방의 데이터를 새로 가져오도록 함
-        console.log("contChatMutation error:", err)
-        queryClient.invalidateQueries(["conversation", focusedChat])
+  const contChatMutation = useMutation(({ ask, chatId }) => gptAPI.continueChat(ask, chatId), {
+    onSuccess: (res) => {
+      console.log(`contChatMutationRes:::`, res);
+      queryClient.invalidateQueries(["conversation"]);
+      queryClient.invalidateQueries(["credit"]);
+    },
+    onError: (err) => {
+      // 에러가 발생하면 해당 채팅방의 데이터를 새로 가져오도록 함
+      console.log("contChatMutation error:", err);
+      if (err.response.status === 402) {
+        alert(
+          ` 사용가능한 횟수를 모두 소진하였습니다.
+사용가능 횟수는 매일 10회씩 충전됩니다.`
+        );
       }
-    }
-  );
-
-  if (contChatMutation.isLoading) { // 로딩중일때 loader icon 띄우기
-
+      queryClient.invalidateQueries(["conversation", focusedChat]);
+    },
+  });
+  if (contChatMutation.isLoading) {
+    // 로딩중일때 loader icon 띄우기
   }
 
   const handleNewSubmit = async (inputValue) => {
     const reqBody = { ask: inputValue }; // 질문을 서버로 보내기 위한 요청 본문
     const reqResponse = await makeChatMutation.mutateAsync(reqBody);
     const reqAnswer = reqResponse.data;
-    console.log(reqAnswer)
+    console.log(reqAnswer);
     // 응답 코드 관리
     let code = reqAnswer.code;
 
@@ -132,32 +132,20 @@ function Layout() {
       chatId,
     });
     const reqAnswer = reqResponse.data;
-    console.log(reqAnswer);
+    console.log("Gpt answer:", reqAnswer);
   };
 
   // new Chat 버튼 클릭시 handler
   const newChatClickHandler = () => {
     setFocusedChat(null);
-  }
+  };
 
   return (
     <>
       {!!chats ? (
         <layout.Flex100>
-          <Nav
-            newChatOnClick={newChatClickHandler}
-            navOnClick={navOnClickHandler}
-            focusedChat={focusedChat}
-            email={email}
-            hex={userHex}
-            chats={chats}
-          />
-          <Main
-            focusedChat={focusedChat}
-            handleSubmit={
-              focusedChat === null ? handleNewSubmit : handleReplSubmit
-            }
-          />
+          <Nav newChatOnClick={newChatClickHandler} navOnClick={navOnClickHandler} focusedChat={focusedChat} email={email} hex={userHex} chats={chats} />
+          <Main focusedChat={focusedChat} handleSubmit={focusedChat === null ? handleNewSubmit : handleReplSubmit} />
         </layout.Flex100>
       ) : (
         <div>Loading...</div>

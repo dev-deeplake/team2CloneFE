@@ -17,7 +17,6 @@ function MainTextInput({ handleSubmit, focusedChat }) {
   const textAreaRef = useRef(null);
   const queryClient = useQueryClient();
 
-
   useEffect(() => {
     const countLines = () => {
       if (textAreaRef.current) {
@@ -37,7 +36,7 @@ function MainTextInput({ handleSubmit, focusedChat }) {
   return (
     <style.MainInputContainer>
       <style.MainInput onChange={(event) => setInputValue(event.target.value)} value={inputValue} height={inputHeight} placeholder="Send a message..."></style.MainInput>
-      <Send iconColor={localStorage.getItem("userHex")} isContent={!!inputValue} handleSubmit={focusedChat === null ? (() => handleSubmit(inputValue)) : (() => handleSubmit(inputValue, focusedChat))} />
+      <Send iconColor={localStorage.getItem("userHex")} isContent={!!inputValue} handleSubmit={focusedChat === null ? () => handleSubmit(inputValue) : () => handleSubmit(inputValue, focusedChat)} />
     </style.MainInputContainer>
   );
 }
