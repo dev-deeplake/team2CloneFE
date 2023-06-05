@@ -35,7 +35,7 @@ function NavEntry({children, onClick, renderCondition, id}) {
         }
     }
   return (
-    <style.IconUsingBtn name="chat" onClick={onClick}>
+    <style.IconUsingBtn name="chat" onClick={onClick} style={renderCondition === "selected" ? {boxShadow: `100px 100px ${sVar.darkLightened} inset`} : {}}>
         <Chat style={{ transform: "scaleX(-1)", marginRight: "10px" }} />
         { renderCondition === "modify" ? 
         (<input name="modify" style={{borderRadius: "2px", outline:"none", boxSizing: "border-box", width: "130px", textAlign: "left", color: `${sVar.white70}`, height:"20px", padding: "0", background: "transparent", marginRight: "8px", border: `1px solid rgba(53,99,205,1)`, marginRight: "5px", fontSize: "0.84rem"}} value={children} />) :
