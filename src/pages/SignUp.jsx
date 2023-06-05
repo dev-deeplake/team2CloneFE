@@ -10,7 +10,6 @@ import { userAPI } from "../axios/api";
 import GreenBtn from "../components/GreenBtn";
 import { Link, useNavigate } from "react-router-dom";
 import { encrypt, cryptoKey } from "../util/crypto";
-import { setCookie } from "../util/cookie";
 
 function SignUp() {
   const navigate = useNavigate();
@@ -18,6 +17,8 @@ function SignUp() {
   const [password, setPassword] = useState("");
   // 이메일이 올바르게 입력되면 true로 세팅됨
   const [isEmailInsert, setIsEmailInsert] = useState(false);
+  const [isClickPasswordInput, setIsClickPasswordInput] = useState(false);
+  const [isPasswordCheck, setIsPasswordCheck] = useState(false);
 
   const { mutateAsync: signUpMutation } = useMutation((userInfo) => userAPI.signUp(userInfo), {
     onSuccess: async (res) => {
@@ -37,6 +38,12 @@ function SignUp() {
         break;
       case "password":
         setPassword(value);
+        const passwordFormList = /[~!@#$%^&*()_+|<>?:{}]/;
+        if (value.length === 1) {
+          setIsClickPasswordInput(true);
+        }
+        // css상 마크 변경하는 부분 추가 필요
+        passwordFormList.test(value) ? setIsPasswordCheck(true) : setIsPasswordCheck(false);
         break;
       default:
         break;
@@ -52,7 +59,11 @@ function SignUp() {
     const boolCheckEmailForm = !emailFormList.filter((form) => email.split("@")[1] === form).length;
     // 없으면 알람 발생
     if (boolCheckEmailForm) {
-      return alert("올바른 이메일 형태가 아닙니다. 다시 작성해주세요");
+      return alert(
+        `올바른 이메일 형태가 아닙니다. 
+이메일은 다음과 같은 도메인 중 하나를 사용해야 합니다.
+${emailFormList}`
+      );
     }
     setIsEmailInsert(true);
     // pw 값 존재 시 회원가입 HTTP통신 진행
@@ -86,6 +97,17 @@ function SignUp() {
         <style.UserForm onSubmit={postUserInfoForSignUp}>
           <NameFloatInput name="email" type="email" changeHandler={changeHandler} value={email} isEmailInsert={isEmailInsert} />
           {isEmailInsert ? <NameFloatInput name="password" type="password" changeHandler={changeHandler} value={password} /> : null}
+          {isClickPasswordInput ? (
+            <style.ConfirmPasswordFormDiv>
+              <span>Your password must contain:</span>
+              <ul>
+                <li>
+                  {/* 나중에 마크 추가 후 isPasswordCheck로 마크 변경되도록 설정 필요 */}
+                  <span style={isPasswordCheck ? { color: "green" } : null}>At least 1 exclamation mark</span>
+                </li>
+              </ul>
+            </style.ConfirmPasswordFormDiv>
+          ) : null}
           <GreenBtn size="Big">Continue</GreenBtn>
         </style.UserForm>
         <p>
