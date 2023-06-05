@@ -11,10 +11,11 @@ import Delete from "../icons/Delete";
 import { ReactComponent as Dots } from "../icons/dots.svg";
 import UserIcon from "../icons/UserIcon";
 import UserMenu from "./UserMenu";
+import NavEntry from './NavEntry';
 
 // email => redux 설정
 // user email에 따라 랜덤 아이콘 만들기 구현
-function Nav({ email, hex, chats, navOnClick, newChatOnClick, focusedChat }) {
+function Nav({ clickedSetter, email, hex, chats, navOnClick, newChatOnClick, focusedChat }) {
   const dateKeys = Object.keys(chats)
   const [windowHeight, setWindowHeight] = useState(window.innerHeight)
 
@@ -39,6 +40,10 @@ function Nav({ email, hex, chats, navOnClick, newChatOnClick, focusedChat }) {
             </layout.FlexColumnCenter100>
 
             <style.HeadFootBtnContainer>
+              <NavEntry onClick={navOnClick} renderCondition="modify">test</NavEntry>
+              <NavEntry onClick={navOnClick} renderCondition="none">test</NavEntry>
+              <NavEntry onClick={navOnClick} renderCondition="selected">test</NavEntry>
+              <NavEntry onClick={navOnClick} renderCondition="delete">test</NavEntry>
               {
               // data 객체 안에 있는 key값을 뽑기
               // 해당 key를 기준으로 map 돌리기, 내용을 btn 씌워 반환
@@ -46,7 +51,12 @@ function Nav({ email, hex, chats, navOnClick, newChatOnClick, focusedChat }) {
                 return (
                   <layout.FlexColumnCenter key={group} style={{ alignItems: "flex-start" }}>
                     {!!(chats[group].length) && (<style.GroupText>{group}</style.GroupText>)}
-                    {!!(chats[group].length) && chats[group].map((entry) => {
+                    {!!(chats[group].length) && chats[group].map(entry => {
+                      if (focusedChat == entry["chatId"]) {
+
+                      }
+                    })}
+                    {/* {!!(chats[group].length) && chats[group].map((entry) => {
                       if (focusedChat == entry["chatId"]) {
                         return (
                             <IconUsingBtn
@@ -75,20 +85,7 @@ function Nav({ email, hex, chats, navOnClick, newChatOnClick, focusedChat }) {
                         </IconUsingBtn>
                         )
                       }
-                    })}
-                    {/* {!!(chats[group].length) && chats[group].map((entry) => (
-                      <IconUsingBtn
-                        onClick={navOnClickHandler}
-                        textWidth="170px"
-                        iconFront={<Chat id={entry["chatId"]} style={{ transform: "scaleX(-1)", marginRight: "10px" }} />}
-                        iconTailOne={<Modify id={entry["chatId"]} style={{ marginRight: "10px" }} />}
-                        iconTailTwo={<Delete id={entry["chatId"]} />}
-                        key={entry["chatId"]}
-                        id={entry["chatId"]}
-                      >
-                        {entry["chatName"]}
-                      </IconUsingBtn>
-                    ))} */}
+                    })} */}
                   </layout.FlexColumnCenter>
                 );
               })

@@ -228,6 +228,18 @@ export const UserIcon = styled(layout.FlexCenter100)`
   }} */
 `;
 
+// nav의 tail button 스타일링
+export const TailIcon = styled.button`
+  width: 24px;
+  border: 0;
+  background: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+`
+
 // logout 메뉴 스타일링
 export const LogoutMenu = styled(IconUsingBtn)`
   &:hover {

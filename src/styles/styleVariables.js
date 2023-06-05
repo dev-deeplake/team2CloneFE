@@ -10,6 +10,7 @@ export const white90 = `rgba(251, 251, 255, 0.9)`;
 export const white80 = `rgba(251, 251, 255, 0.8)`;
 export const white70 = `rgba(251, 251, 255, 0.7)`;
 export const white60 = `rgba(251, 251, 255, 0.6)`;
+export const white50 = `rgba(251, 251, 255, 0.5)`;
 export const white20 = `rgba(251, 251, 255, 0.2)`;
 export const white10 = `rgba(251, 251, 255, 0.1)`;
 export const white05 = `rgba(251, 251, 255, 0.05)`;

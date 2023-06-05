@@ -60,9 +60,15 @@ function Layout() {
 
   // focusedChat: 어떤 대화방이 focused 되어있는지 보여주는 state
   const [focusedChat, setFocusedChat] = useState(null);
+  const [clicked, setClicked] = useState("none")
   const navOnClickHandler = (event) => {
-    setFocusedChat(event.target.id);
-    console.log(event.target.id);
+    event.stopPropagation()
+    // setFocusedChat(event.target.id);
+    console.log(event.target.tagName)
+    console.log(event.currentTarget.tagName)
+    console.log(event.currentTarget.name)
+    console.log(event.target);
+    console.log(event.target.class)
   };
 
   const makeChatMutation = useMutation(gptAPI.makeChat, {
@@ -100,9 +106,6 @@ function Layout() {
       queryClient.invalidateQueries(["conversation", focusedChat]);
     },
   });
-  if (contChatMutation.isLoading) {
-    // 로딩중일때 loader icon 띄우기
-  }
 
   const handleNewSubmit = async (inputValue) => {
     const reqBody = { ask: inputValue }; // 질문을 서버로 보내기 위한 요청 본문
@@ -144,7 +147,7 @@ function Layout() {
     <>
       {!!chats ? (
         <layout.Flex100>
-          <Nav newChatOnClick={newChatClickHandler} navOnClick={navOnClickHandler} focusedChat={focusedChat} email={email} hex={userHex} chats={chats} />
+          <Nav clickedSetter={setClicked} newChatOnClick={newChatClickHandler} navOnClick={navOnClickHandler} focusedChat={focusedChat} email={email} hex={userHex} chats={chats} />
           <Main focusedChat={focusedChat} handleSubmit={focusedChat === null ? handleNewSubmit : handleReplSubmit} />
         </layout.Flex100>
       ) : (
