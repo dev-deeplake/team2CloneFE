@@ -24,6 +24,13 @@ export const UserForm = styled(layout.FlexColumnForm)`
   }
 `;
 
+export const ConfirmPasswordFormDiv = styled(layout.FlexColumn100)`
+  padding: 18px;
+  border: 1px solid black;
+  margin-top: 8px;
+  gap: 18px;
+`;
+
 // 이하 메인 대화 화면에서 사용되는 styles
 // icon이 들어가는 버튼의 스타일링
 export const IconUsingBtn = styled.button`

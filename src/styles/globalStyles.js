@@ -61,6 +61,7 @@ const GlobalStyles = createGlobalStyle`
   background-color: #d1fff74d;
   padding: 10px;
   font-family: "Courier New", Courier, monospace;
+  margin-bottom: 20px;
   }
 `;
 
