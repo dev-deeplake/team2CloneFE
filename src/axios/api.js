@@ -18,7 +18,7 @@ instance.interceptors.request.use(
     const checkCookie = getCookie("Authorization");
     const cookie = !!checkCookie ? checkCookie : null;
     config.headers.Authorization = cookie;
-    console.log(`${config.url} request is`, config);
+    console.log(`${config.url} ${config.method} request is`, config);
     return config;
   },
   function (error) {
@@ -30,12 +30,13 @@ instance.interceptors.request.use(
 // 설정된 기능 : 인터셉트하여 console에 찍어줌
 instance.interceptors.response.use(
   function (response) {
-    console.log(`${response.config.url} response is`, response);
+    console.log(`${response.config.url} ${response.config.method} response is`, response);
     return response;
   },
   function (error) {
-    console.log(`${error.config.url} error : ${error.message}`);
+    console.log(`${error.config.url} ${error.config.method} error is`, error);
     return Promise.reject(error);
+    // return error.response.status;
   }
 );
 export const userAPI = {
@@ -50,6 +51,6 @@ export const gptAPI = {
   getChats: async () => await instance.get("/chat"),
   getConvs: async (chatId) => await instance.get(`/chat/${chatId}`),
   makeChat: async (ask) => await instance.post("/chat", ask),
-  continueChat: async (ask, chatId) => await instance.post(`chat/${chatId}`, ask)
+  continueChat: async (ask, chatId) => await instance.post(`chat/${chatId}`, ask),
 };
 export default instance;

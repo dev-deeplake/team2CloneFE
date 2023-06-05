@@ -5,8 +5,9 @@ import * as sVar from "../styles/styleVariables";
 import { ReactComponent as Power } from "../icons/power.svg";
 import MainTextInput from "./MainTextInput";
 import { useQuery } from "react-query";
-import { gptAPI } from "../axios/api";
+import { gptAPI, userAPI } from "../axios/api";
 import Conversation from "./Conversation";
+import zIndex from "@mui/material/styles/zIndex";
 
 function Main({ handleSubmit, focusedChat }) {
   // focusedChat에 데이터가 있을 때 대화내용 조회 API (/api/chat/:chatId)를 통해 conversation을 받아와 띄워주기
@@ -31,6 +32,14 @@ function Main({ handleSubmit, focusedChat }) {
     }
   );
 
+  const { data: credit } = useQuery(["credit"], userAPI.getCredit, {
+    onSuccess: (res) => {
+      console.log("credit is", res);
+    },
+    refetchOnWindowFocus: false,
+    select: (data) => data.data.data.mycredit,
+  });
+
   return (
     <style.MainContainer>
       <style.MainHeader
@@ -47,33 +56,23 @@ function Main({ handleSubmit, focusedChat }) {
       </style.MainHeader>
       {/* 새 대화가 시작 되어야 출력되는 글-댓글 형식의 post */}
       {console.log(`conv::: ${conv}`)}
-      {console.log(conv !== undefined)}
+      {/* {console.log(conv !== undefined)} */}
       {conv !== undefined ? (
         conv.map((conversation, idx) => {
           if (idx === conv.length - 1 && conversation.isGPT === false) {
             return (
               <>
-                <Conversation
-                  isGPT={conversation.isGPT}
-                  convId={conversation.conversationId}
-                >
+                <Conversation isGPT={conversation.isGPT} convId={conversation.conversationId}>
                   {conversation.conversation}
                 </Conversation>
-                <Conversation
-                  isGPT="loading"
-                  convId="loading"
-                >
-                </Conversation>
+                <Conversation isGPT="loading" convId="loading"></Conversation>
               </>
-            )
+            );
           }
-          console.log(conv)
-          console.log(idx)
+          // console.log(conv);
+          // console.log(idx);
           return (
-            <Conversation
-              isGPT={conversation.isGPT}
-              convId={conversation.conversationId}
-            >
+            <Conversation isGPT={conversation.isGPT} convId={conversation.conversationId}>
               {conversation.conversation}
             </Conversation>
           );
@@ -103,6 +102,7 @@ function Main({ handleSubmit, focusedChat }) {
           ) } */}
       {/* 새 대화가 시작되지 않았으면 화면 가운데에 ChatGPT 글자 띄우기 */}
       <layout.FlexColumnCenterRow>
+        <style.CreditContainer credit={credit}>남은횟수 : {credit}</style.CreditContainer>
         <MainTextInput focusedChat={focusedChat} handleSubmit={handleSubmit} />
         <p
           style={{
@@ -113,8 +113,7 @@ function Main({ handleSubmit, focusedChat }) {
             zIndex: "1",
           }}
         >
-          ChapGPT may produce inaccurate information about people, places, or
-          facts. <u>ChapGPT June 04 Version</u>
+          ChapGPT may produce inaccurate information about people, places, or facts. <u>ChapGPT June 04 Version</u>
         </p>
         <style.MainDivWhite></style.MainDivWhite>
       </layout.FlexColumnCenterRow>
