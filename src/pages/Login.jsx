@@ -101,14 +101,19 @@ function Login() {
         <Logo />
       </layout.FlexCenter100>
       <layout.FlexColumnCenter100 style={{ padding: "80px" }}>
-        <LoginHeader style={{ color: `${sVar.black80}` }}>Welcome back</LoginHeader>
+        <layout.FlexColumnCenter style={{ padding: "40px 40px 24px 40px", width: "400px", height: "136px", justifyContent: "space-between" }}>
+          <LoginHeader style={{ color: `${sVar.black80}` }}>Welcome back</LoginHeader>
+        </layout.FlexColumnCenter>
         <style.UserForm onSubmit={postUserInfoForSignUp}>
           <NameFloatInput name="email" type="email" changeHandler={changeHandler} value={email} isEmailInsert={isEmailInsert} />
           {isEmailInsert ? <NameFloatInput name="password" type="password" changeHandler={changeHandler} value={password} /> : null}
           <GreenBtn size="Big">Continue</GreenBtn>
         </style.UserForm>
-        <p>
-          Don't have an account? <Link to={"/signup"}>Sign up</Link>
+        <p style={{ marginTop: "10px", fontSize: "0.9rem" }}>
+          Don't have an account?{" "}
+          <Link to={"/signup"} style={{ color: `${sVar.loginHLColor90}`, textDecoration: "none", marginLeft: "5px" }}>
+            Sign up
+          </Link>
         </p>
       </layout.FlexColumnCenter100>
     </layout.FlexColumnCenter>
