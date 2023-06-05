@@ -3,7 +3,7 @@ import * as layout from "../styles/layouts";
 import * as sVar from "../styles/styleVariables";
 
 // 로그인 및 회원가입시 heading 스타일 설정
-export const Heading = styled.h1`
+export const Heading = styled.div`
   font-size: 32px;
   font-weight: 700;
   margin-top: 24px;
@@ -13,10 +13,20 @@ export const Heading = styled.h1`
 export const UserForm = styled(layout.FlexColumnForm)`
   text-align: left;
   width: 320px;
-  > input {
+  > input,
+  > div {
+    border: 1px solid #c2c8d0;
+    box-sizing: border-box;
     width: inherit;
     height: 52px;
-    padding: 0;
+    padding: 0 16px;
+    margin-bottom: 16px;
+    border-radius: 4px;
+    transition: border 0.2s ease-in-out;
+    &:focus {
+      outline: none;
+      border: 1px solid ${sVar.loginHLColor90};
+    }
   }
   > button {
     width: inherit;

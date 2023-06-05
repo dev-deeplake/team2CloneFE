@@ -84,16 +84,22 @@ ${emailFormList}`
         <Logo />
       </layout.FlexCenter100>
       <layout.FlexColumnCenter100 style={{ padding: "80px" }}>
-        <LoginHeader style={{ color: `${sVar.black80}` }}>Welcome back</LoginHeader>
-        <p
-          style={{
-            width: "320px",
-            wordBreak: "break-word",
-            textAlign: "center",
-          }}
-        >
-          Please note that phone verification is required for signup. Your number will only be used to verify your identity for security purposes.
-        </p>
+        <layout.FlexColumnCenter style={{ padding: "40px 40px 24px 40px", width: "400px", height: "200px", justifyContent: "space-between" }}>
+          <LoginHeader style={{ color: `${sVar.black80}` }}>Create your account</LoginHeader>
+          <div
+            style={{
+              fontSize: "0.85rem",
+              fontWeight: "400",
+              width: "320px",
+              padding: "0",
+              wordBreak: "break-word",
+              textAlign: "center",
+              lineHeight: "1.5",
+            }}
+          >
+            Please note that phone verification is required for signup. Your number will only be used to verify your identity for security purposes.
+          </div>
+        </layout.FlexColumnCenter>
         <style.UserForm onSubmit={postUserInfoForSignUp}>
           <NameFloatInput name="email" type="email" changeHandler={changeHandler} value={email} isEmailInsert={isEmailInsert} />
           {isEmailInsert ? <NameFloatInput name="password" type="password" changeHandler={changeHandler} value={password} /> : null}
@@ -110,8 +116,11 @@ ${emailFormList}`
           ) : null}
           <GreenBtn size="Big">Continue</GreenBtn>
         </style.UserForm>
-        <p>
-          Already have an account? <Link to={"/login"}>Log in</Link>
+        <p style={{ marginTop: "10px", fontSize: "0.9rem" }}>
+          Already have an account?{" "}
+          <Link to={"/login"} style={{ color: `${sVar.loginHLColor90}`, textDecoration: "none", marginLeft: "5px" }}>
+            Log in
+          </Link>
         </p>
       </layout.FlexColumnCenter100>
     </layout.FlexColumnCenter>
