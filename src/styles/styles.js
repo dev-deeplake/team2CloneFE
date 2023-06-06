@@ -43,7 +43,7 @@ export const ConfirmPasswordFormDiv = styled(layout.FlexColumn100)`
 
 // 이하 메인 대화 화면에서 사용되는 styles
 // icon이 들어가는 버튼의 스타일링
-export const IconUsingBtn = styled.button`
+export const IconUsingBtn = styled.div`
   width: 240px;
   padding: 12px;
   margin: 5px 0 0 0;
@@ -322,3 +322,19 @@ export const Cursor = styled.div`
   color: transparent;
   animation: 1s ${blink} step-end infinite;
 `;
+
+// Nav의 버튼이 'modify'일 때 보여줄 input 스타일링
+export const NavModifyInput = styled.input`
+  border-radius: 2px;
+  outline: none;
+  box-sizing: border-box;
+  width: 130px;
+  text-align: left;
+  color: ${sVar.white70};
+  height: 20px;
+  padding: 0;
+  background: transparent;
+  margin-right: 5px;
+  border: 1px solid ${sVar.navInputBorderColor};
+  font-size: 0.85rem;
+`

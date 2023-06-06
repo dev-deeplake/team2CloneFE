@@ -5,7 +5,7 @@ import * as style from "../styles/styles";
 import * as sVar from "../styles/styleVariables";
 import Send from "../icons/Send";
 import { useState, useRef, useEffect } from "react";
-import { useMutation, useQueryClient } from "react-query";
+import { useQueryClient } from "react-query";
 import { gptAPI } from "../axios/api";
 
 function MainTextInput({ handleSubmit, focusedChat }) {
@@ -36,7 +36,7 @@ function MainTextInput({ handleSubmit, focusedChat }) {
   return (
     <style.MainInputContainer>
       <style.MainInput onChange={(event) => setInputValue(event.target.value)} value={inputValue} height={inputHeight} placeholder="Send a message..."></style.MainInput>
-      <Send iconColor={localStorage.getItem("userHex")} isContent={!!inputValue} handleSubmit={focusedChat === null ? () => handleSubmit(inputValue) : () => handleSubmit(inputValue, focusedChat)} />
+      <Send iconColor={sessionStorage.getItem("userHex")} isContent={!!inputValue} handleSubmit={focusedChat === null ? () => handleSubmit(inputValue) : () => handleSubmit(inputValue, focusedChat)} />
     </style.MainInputContainer>
   );
 }

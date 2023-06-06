@@ -3,7 +3,7 @@ import * as sVar from "../styles/styleVariables"
 import * as style from "../styles/styles"
 import { useState } from 'react';
 
-function Confirm({ id, name }) {
+function Confirm({ id, name, onClick }) {
   const INIT_HEX = sVar.white50;
   const OVER_HEX = sVar.white100;
   const [fillColor, setFillColor] = useState(INIT_HEX);
@@ -21,7 +21,7 @@ function Confirm({ id, name }) {
     <style.TailIcon
       id={id}
       name={name}
-      onClick={smallBtnClickHandler}
+      onClick={onClick}
       onMouseOver={onMouseOver}
       onMouseOut={onMouseOut}>
       <svg width="16" height="16">

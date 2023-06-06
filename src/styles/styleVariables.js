@@ -33,5 +33,6 @@ export const groupTextColor = `rgba(142, 142, 160, 1)`;
 export const loginHLColor90 = `rgba(16, 163, 126, 0.9)`;
 export const loginHLColor100 = `rgba(16, 163, 126, 1)`;
 
+export const navInputBorderColor = `rgba(53, 99, 205, 1)`;
 
 

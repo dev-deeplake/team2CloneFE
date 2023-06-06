@@ -3,7 +3,7 @@ import * as sVar from "../styles/styleVariables"
 import * as style from "../styles/styles"
 import { useState } from 'react';
 
-function Cancel({ id, name }) {
+function Cancel({ id, name, iconStateSetter }) {
   const INIT_HEX = sVar.white60;
   const OVER_HEX = sVar.white100;
   const [fillColor, setFillColor] = useState(INIT_HEX);
@@ -15,7 +15,7 @@ function Cancel({ id, name }) {
   };
   const smallBtnClickHandler = (event) => {
     event.stopPropagation();
-    console.log(name)
+    iconStateSetter(false)
 }
   return (
     <style.TailIcon id={id} name={name} onClick={smallBtnClickHandler} onMouseOver={onMouseOver} onMouseOut={onMouseOut}>

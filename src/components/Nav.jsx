@@ -15,10 +15,32 @@ import NavEntry from './NavEntry';
 
 // email => redux 설정
 // user email에 따라 랜덤 아이콘 만들기 구현
-function Nav({ clickedSetter, email, hex, chats, navOnClick, newChatOnClick, focusedChat }) {
+function Nav({ focusedSetter, email, hex, chats, navOnClick, newChatOnClick, focusedChat }) {
   const dateKeys = Object.keys(chats)
   const [windowHeight, setWindowHeight] = useState(window.innerHeight)
+  // const [isFocused, setIsFocused] = useState(false)
 
+  // const entryRenderer = (focusedState) => {
+  //   console.log("entryRenderer=====")
+  //   console.log(isFocused)
+  //   console.log(focusedState)
+  //   console.log(focusedChat)
+  //   console.log("===================")
+  //   if (isFocused) {
+  //     return focusedState
+  //   } else {
+  //     return "none"
+  //   }
+  // }
+
+  // const entryClickHandler = (event) => {
+  //   console.log("chatId::::", event.currentTarget.id)
+  //   if ((event.currentTarget.id == focusedChat) && !isFocused) {
+  //     setIsFocused(true)
+  //   } else if ((event.currentTarget.id != focusedChat) && !!isFocused) {
+  //     setIsFocused(false)
+  //   }
+  // }
 
   useEffect(() => {
     const handleResize = () => {
@@ -31,6 +53,7 @@ function Nav({ clickedSetter, email, hex, chats, navOnClick, newChatOnClick, foc
     }
   }, [windowHeight])
 
+
   return (
           <style.NavContainer>
             <layout.FlexColumnCenter100 style={{height: "50px", position: "absolute", top: "10px", width: "260px"}}>
@@ -40,10 +63,10 @@ function Nav({ clickedSetter, email, hex, chats, navOnClick, newChatOnClick, foc
             </layout.FlexColumnCenter100>
 
             <style.HeadFootBtnContainer>
-              <NavEntry onClick={navOnClick} renderCondition="modify">test</NavEntry>
+              {/* <NavEntry onClick={navOnClick} renderCondition="modify">test</NavEntry>
               <NavEntry onClick={navOnClick} renderCondition="none">test</NavEntry>
               <NavEntry onClick={navOnClick} renderCondition="selected">test</NavEntry>
-              <NavEntry onClick={navOnClick} renderCondition="delete">test</NavEntry>
+              <NavEntry onClick={navOnClick} renderCondition="delete">test</NavEntry> */}
               {
               // data 객체 안에 있는 key값을 뽑기
               // 해당 key를 기준으로 map 돌리기, 내용을 btn 씌워 반환
@@ -52,9 +75,18 @@ function Nav({ clickedSetter, email, hex, chats, navOnClick, newChatOnClick, foc
                   <layout.FlexColumnCenter key={group} style={{ alignItems: "flex-start" }}>
                     {!!(chats[group].length) && (<style.GroupText>{group}</style.GroupText>)}
                     {!!(chats[group].length) && chats[group].map(entry => {
-                      if (focusedChat == entry["chatId"]) {
+                      return (
+                        <NavEntry
+                          key={entry["chatId"]}
+                          id={entry["chatId"]}
+                          isFocused={focusedChat == entry["chatId"]}
+                          onClick={navOnClick}
+                          focusedSetter={focusedSetter}
+                        >
+                          {entry["chatName"]}
+                        </NavEntry>
+                      )
 
-                      }
                     })}
                     {/* {!!(chats[group].length) && chats[group].map((entry) => {
                       if (focusedChat == entry["chatId"]) {
