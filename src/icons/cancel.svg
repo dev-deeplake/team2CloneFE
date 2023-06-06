@@ -1,0 +1,9 @@
+<svg width="16" height="16">
+ <g class="layer">
+  <title>Layer 1</title>
+  <g fill="none" id="svg_1" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10">
+   <path d="m1.64,2.28l5.68,5.68" id="svg_2" transform="translate(1 0) scale(1.5625 1.5625)"/>
+   <path d="m1.64,7.96l5.68,-5.68" id="svg_3" transform="translate(1 0) scale(1.5625 1.5625)"/>
+  </g>
+ </g>
+</svg>
