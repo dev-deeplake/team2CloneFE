@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useState } from "react";
 import * as layout from "../styles/layouts";
 import * as style from "../styles/styles";
 import * as sVar from "../styles/styleVariables";
@@ -45,7 +45,15 @@ function Main({ handleSubmit, focusedChat }) {
     select: (data) => data.data.data.mycredit,
   });
 
-  const ref = useRef() // 참조 생성
+  const [isLoading, setIsLoading] = useState(false)
+  if (conv !== undefined) {
+    if (conv[conv.length-1].isGPT === false && !isLoading) {
+      setIsLoading(true)
+    } else if (conv[conv.length-1].isGPT === true && !!isLoading) {
+      setIsLoading(false)
+    }
+  }
+
 
   return (
     <style.MainContainer>
@@ -110,7 +118,7 @@ function Main({ handleSubmit, focusedChat }) {
       {/* 새 대화가 시작되지 않았으면 화면 가운데에 ChatGPT 글자 띄우기 */}
       <layout.FlexColumnCenterRow>
         {/* <style.CreditContainer credit={credit}>Remaining credits : {credit}</style.CreditContainer> */}
-        <MainTextInput credit={credit} focusedChat={focusedChat} handleSubmit={handleSubmit} />
+        <MainTextInput isLoading={isLoading} credit={credit} focusedChat={focusedChat} handleSubmit={handleSubmit} />
         <p
           style={{
             position: "fixed",

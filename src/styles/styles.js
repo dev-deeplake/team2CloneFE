@@ -139,13 +139,13 @@ export const CreditContainer = styled(layout.FlexCenter100)`
   bottom: 125px;
   z-index: 1;
   border: 1px solid #d9d9e3;
-  color: ${sVar.black50};
+  color: ${sVar.loginHLColor80};;
   background-color: white;
   border-radius: 0.35rem;
   font-size: 0.75rem;
   ${(props) => {
     if (props.credit === 0) {
-      return `color: ${sVar.loginHLColor80};`;
+      return `color: ${sVar.black40};`;
     }
   }}
 `;
@@ -294,6 +294,12 @@ export const SendContainer = styled.div`
       // return `background: rgba(171, 104, 255, 1);`
       // return `background: #19C37D;`
       return `background: ${props.iconColor};`;
+    }
+    if (!!props.disabled) {
+      return `
+        background: ${sVar.black20};
+        cursor: not-allowed;
+      `
     }
   }}
 `;

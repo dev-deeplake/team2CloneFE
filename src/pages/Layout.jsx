@@ -89,8 +89,8 @@ function Layout() {
       console.log("makeChatMutation error:", err);
       if (err.response.status === 402) {
         alert(
-          ` 사용가능한 횟수를 모두 소진하였습니다.
-            사용가능 횟수는 매일 10회씩 충전됩니다.`
+          `사용가능한 횟수를 모두 소진하였습니다.
+사용가능 횟수는 매일 10회씩 충전됩니다.`
         );
       }
     },
@@ -107,8 +107,8 @@ function Layout() {
       console.log("contChatMutation error:", err);
       if (err.response.status === 402) {
         alert(
-          ` 사용가능한 횟수를 모두 소진하였습니다.
-            사용가능 횟수는 매일 10회씩 충전됩니다.`
+          `사용가능한 횟수를 모두 소진하였습니다.
+사용가능 횟수는 매일 10회씩 충전됩니다.`
         );
       }
       queryClient.invalidateQueries(["conversation", focusedChat]);

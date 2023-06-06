@@ -8,7 +8,7 @@ import { useState, useRef, useEffect } from "react";
 import { useQueryClient } from "react-query";
 import { gptAPI } from "../axios/api";
 
-function MainTextInput({ handleSubmit, focusedChat, credit }) {
+function MainTextInput({ isLoading, handleSubmit, focusedChat, credit }) {
   const INIT_HEIGHT = "24px";
   const INIT_INPUT_VALUE = "";
   const [inputHeight, setInputHeight] = useState(INIT_HEIGHT);
@@ -17,8 +17,6 @@ function MainTextInput({ handleSubmit, focusedChat, credit }) {
   const [lineCount, setLineCount] = useState(1);
   const [creditHeight, setCreditHeight] = useState("125px")
   const textAreaRef = useRef(null);
-  const queryClient = useQueryClient();
-  let tmpCharCount = []
 
   useEffect(() => { // 라인 계산 및 textarea 넓이 변경 섹션
     const countLines = () => {
@@ -62,7 +60,10 @@ function MainTextInput({ handleSubmit, focusedChat, credit }) {
   const handleKeyDown = (event) => {
     if (event.key === "Enter" && !event.shiftKey && !event.nativeEvent.isComposing) { // event.nativeEvent.isComposing이 false일 때만 동작 (맨 마지막 글자 재출력 방지)
       event.preventDefault() // 엔터키 쳤을 때의 줄바꿈 막기
-      submitHandler()
+      if (!isLoading) {
+        submitHandler()
+      }
+      
     }
   }
 
@@ -71,7 +72,7 @@ function MainTextInput({ handleSubmit, focusedChat, credit }) {
       <style.CreditContainer style={{bottom: `${creditHeight}`}} credit={credit}>Remaining credits : {credit}</style.CreditContainer>
       <style.MainInputContainer>
         <style.MainInput height={inputHeight} ref={textAreaRef} onKeyDown={handleKeyDown} onChange={(event) => setInputValue(event.target.value)} value={inputValue} placeholder="Send a message..."></style.MainInput>
-        <Send iconColor={sessionStorage.getItem("userHex")} isContent={!!inputValue} handleSubmit={focusedChat === null ? () => handleSubmit(inputValue) : () => handleSubmit(inputValue, focusedChat)} />
+        <Send isLoading={isLoading} iconColor={sessionStorage.getItem("userHex")} isContent={!!inputValue} handleSubmit={focusedChat === null ? () => handleSubmit(inputValue) : () => handleSubmit(inputValue, focusedChat)} />
       </style.MainInputContainer>
     </>
   );
