@@ -50,8 +50,19 @@ function SignUp() {
     }
   };
 
+  const checkUserPassword = () => {
+    const passwordFormList = /[~!@#$%^&*()_+|<>?:{}]/;
+    if (password && passwordFormList.test(password)) {
+      signUpMutation({ email, password });
+    }
+  };
+
   const postUserInfoForSignUp = (event) => {
     event.preventDefault();
+    isEmailInsert ? checkUserPassword() : checkUserEmail();
+  };
+
+  const checkUserEmail = (event) => {
     // 이메일 허용 양식
     const emailFormList = ["naver.com", "gmail.com", "hanmail.net", "kakao.com"];
     // 입력한 이메일이 허용 양식 중에 있는지 확인
@@ -61,15 +72,23 @@ function SignUp() {
     if (boolCheckEmailForm) {
       return alert(
         `올바른 이메일 형태가 아닙니다. 
-이메일은 다음과 같은 도메인 중 하나를 사용해야 합니다.
-${emailFormList}`
+  이메일은 다음과 같은 도메인 중 하나를 사용해야 합니다.
+  ${emailFormList}`
       );
     }
     setIsEmailInsert(true);
     // pw 값 존재 시 회원가입 HTTP통신 진행
-    if (password && passwordFormList.test(password)) {
-      signUpMutation({ email, password });
+    if (password.length >= 1) {
+      setIsClickPasswordInput(true);
     }
+    if (password && passwordFormList.test(password)) {
+      setIsPasswordCheck(true);
+    }
+  };
+
+  const canWriteEmail = () => {
+    setIsEmailInsert(false);
+    setIsClickPasswordInput(false);
   };
 
   useEffect(() => {
@@ -101,7 +120,7 @@ ${emailFormList}`
           </div>
         </layout.FlexColumnCenter>
         <style.UserForm onSubmit={postUserInfoForSignUp}>
-          <NameFloatInput name="email" type="email" changeHandler={changeHandler} value={email} isEmailInsert={isEmailInsert} />
+          <NameFloatInput name="email" type="email" changeHandler={changeHandler} value={email} isEmailInsert={isEmailInsert} canWriteEmail={canWriteEmail} />
           {isEmailInsert ? <NameFloatInput name="password" type="password" changeHandler={changeHandler} value={password} /> : null}
           {isClickPasswordInput ? (
             <style.ConfirmPasswordFormDiv>
