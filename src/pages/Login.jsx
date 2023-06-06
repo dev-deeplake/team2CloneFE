@@ -93,6 +93,13 @@ function Login() {
     }
   };
 
+  const enterKey = (event) => {
+    if (event.keyCode === 13) {
+      event.preventDefault();
+      isEmailInsert ? checkUserPassword() : checkUserEmail();
+    }
+  };
+
   useEffect(() => {
     if (sessionStorage.getItem("Login")) {
       navigate("/");
@@ -108,7 +115,7 @@ function Login() {
         <layout.FlexColumnCenter style={{ padding: "40px 40px 24px 40px", width: "400px", height: "136px", justifyContent: "space-between" }}>
           <LoginHeader style={{ color: `${sVar.black80}` }}>Welcome back</LoginHeader>
         </layout.FlexColumnCenter>
-        <style.UserForm onSubmit={postUserInfoForLogin}>
+        <style.UserForm onSubmit={postUserInfoForLogin} onKeyDown={enterKey}>
           <NameFloatInput name="email" changeHandler={changeHandler} value={email} isEmailInsert={isEmailInsert} canWriteEmail={canWriteEmail} />
           {isEmailInsert ? <NameFloatInput name="password" changeHandler={changeHandler} value={password} /> : null}
           <GreenBtn size="Big">Continue</GreenBtn>

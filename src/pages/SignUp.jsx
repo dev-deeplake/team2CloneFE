@@ -21,12 +21,15 @@ function SignUp() {
   const [isPasswordCheck, setIsPasswordCheck] = useState(false);
 
   const { mutateAsync: signUpMutation } = useMutation((userInfo) => userAPI.signUp(userInfo), {
-    onSuccess: async (res) => {
+    onSuccess: (res) => {
       console.log(res);
       alert("성공적으로 회원가입되었습니다..");
       localStorage.setItem("USR", encrypt({ email, password }, cryptoKey));
       document.cookie = "Authorization =; expires=Thu, 01 Jan 1970 00:00:01 GMT; ";
       navigate("/login");
+    },
+    onError: (err) => {
+      alert(err.response.data.message);
     },
   });
 
@@ -91,6 +94,13 @@ function SignUp() {
     setIsClickPasswordInput(false);
   };
 
+  const enterKey = (event) => {
+    if (event.keyCode === 13) {
+      event.preventDefault();
+      isEmailInsert ? checkUserPassword() : checkUserEmail();
+    }
+  };
+
   useEffect(() => {
     if (sessionStorage.getItem("Login")) {
       navigate("/");
@@ -119,7 +129,7 @@ function SignUp() {
             Please note that phone verification is required for signup. Your number will only be used to verify your identity for security purposes.
           </div>
         </layout.FlexColumnCenter>
-        <style.UserForm onSubmit={postUserInfoForSignUp}>
+        <style.UserForm onSubmit={postUserInfoForSignUp} onKeyDown={enterKey}>
           <NameFloatInput name="email" type="email" changeHandler={changeHandler} value={email} isEmailInsert={isEmailInsert} canWriteEmail={canWriteEmail} />
           {isEmailInsert ? <NameFloatInput name="password" type="password" changeHandler={changeHandler} value={password} /> : null}
           {isClickPasswordInput ? (

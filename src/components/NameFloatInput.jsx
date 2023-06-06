@@ -33,11 +33,11 @@ function NameFloatInput({ name, changeHandler, value, isEmailInsert = false, can
         </FuncBtn>
       </layout.FlexCenterRow100SpaceBetween>
     ) : (
-      <input style={{ width: "100%" }} name={name} required onChange={changeHandler} autoComplete="off" type="email" value={value} />
+      <input autoFocus style={{ width: "100%" }} name={name} required onChange={changeHandler} autoComplete="off" type="email" value={value} />
     )
   ) : (
     <layout.FlexCenterRow100SpaceBetween borderColor={borderColor}>
-      <input onFocus={changeBorderToGreen} onBlur={changeBorderToDefault} name={name} required onChange={changeHandler} autoComplete="off" type={type} value={value} />
+      <input autoFocus onFocus={changeBorderToGreen} onBlur={changeBorderToDefault} name={name} required onChange={changeHandler} autoComplete="off" type={type} value={value} />
       <FuncBtn name={name} showPassword={showPasswordHandler}>
         {icon}
       </FuncBtn>
