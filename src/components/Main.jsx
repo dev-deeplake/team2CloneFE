@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import * as layout from "../styles/layouts";
 import * as style from "../styles/styles";
 import * as sVar from "../styles/styleVariables";
@@ -7,7 +7,6 @@ import MainTextInput from "./MainTextInput";
 import { useQuery, useQueryClient } from "react-query";
 import { gptAPI, userAPI } from "../axios/api";
 import Conversation from "./Conversation";
-import zIndex from "@mui/material/styles/zIndex";
 
 function Main({ handleSubmit, focusedChat }) {
   const queryClient = useQueryClient();
@@ -45,6 +44,8 @@ function Main({ handleSubmit, focusedChat }) {
     // refetchInterval: 1000,
     select: (data) => data.data.data.mycredit,
   });
+
+  const ref = useRef() // 참조 생성
 
   return (
     <style.MainContainer>
@@ -108,8 +109,8 @@ function Main({ handleSubmit, focusedChat }) {
           ) } */}
       {/* 새 대화가 시작되지 않았으면 화면 가운데에 ChatGPT 글자 띄우기 */}
       <layout.FlexColumnCenterRow>
-        <style.CreditContainer credit={credit}>remain credit : {credit}</style.CreditContainer>
-        <MainTextInput focusedChat={focusedChat} handleSubmit={handleSubmit} />
+        {/* <style.CreditContainer credit={credit}>Remaining credits : {credit}</style.CreditContainer> */}
+        <MainTextInput credit={credit} focusedChat={focusedChat} handleSubmit={handleSubmit} />
         <p
           style={{
             position: "fixed",

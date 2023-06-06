@@ -110,6 +110,8 @@ export const MainFooter = styled(layout.FlexColumnCenterRow)`
 `;
 // main 화면 아래쪽의 inputarea 스타일링
 export const MainInputContainer = styled(layout.FlexCenterRow100)`
+  display: flex;
+  align-items: flex-end;
   background: white;
   max-width: 672px;
   width: 100%;
@@ -120,7 +122,7 @@ export const MainInputContainer = styled(layout.FlexCenterRow100)`
   box-shadow: 0 0 15px ${sVar.black10};
   position: fixed;
   bottom: 52px;
-  padding: 1rem 0 1rem 1rem;
+  padding: 0.8rem 0 0.8rem 0.9rem;
   flex-grow: 1;
   z-index: 1;
   &:after,
@@ -131,7 +133,7 @@ export const MainInputContainer = styled(layout.FlexCenterRow100)`
 `;
 
 export const CreditContainer = styled(layout.FlexCenter100)`
-  width: 150px;
+  width: 160px;
   height: 40px;
   position: fixed;
   bottom: 125px;
@@ -143,29 +145,45 @@ export const CreditContainer = styled(layout.FlexCenter100)`
   font-size: 0.75rem;
   ${(props) => {
     if (props.credit === 0) {
-      return `color: ${sVar.loginHLColor90};`;
+      return `color: ${sVar.loginHLColor80};`;
     }
   }}
 `;
 
 export const MainInput = styled.textarea`
   /* box-sizing: border-box; */
+  resize: none;
   color: ${sVar.black80};
   display: flex;
   max-width: 654px;
   width: 100%;
   flex-wrap: wrap;
-  max-height: 200px;
-  height: 24px;
-  overflow-y: hidden;
-  padding-right: 3rem;
-  padding-left: 0;
+  max-height: 120px;
+  min-height: 24px;
+  overflow-y: auto;
+  padding-left: 0.1rem;
   /* background-color: transparent; */
   resize: none;
   line-height: 1.5em;
   border-width: 0;
   font-family: inherit;
   font-size: 0.9rem;
+  /* 스크롤바 스타일 지정 */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: transparent; 
+  }
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: transparent; 
+  }
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: transparent; 
+  }
   &:after,
   &:before {
     border: 0 solid #d9d9e3;
@@ -179,7 +197,14 @@ export const MainInput = styled.textarea`
   }
   ${(props) => {
     if (!!props.height) {
-      return `height: ${props.height};`;
+      if (parseInt(props.height > 120)) {
+        return `
+          overflow-y: scroll
+        `
+      } else {
+        return `height: ${props.height};`;
+      }
+      
     }
   }}
 `;
@@ -259,6 +284,7 @@ export const LogoutMenu = styled(IconUsingBtn)`
 
 // send icon container 스타일링
 export const SendContainer = styled.div`
+  display: flex;
   margin: 0 20px 0 10px;
   padding: 6px;
   border-radius: 6px;
