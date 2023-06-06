@@ -108,7 +108,7 @@ function Main({ handleSubmit, focusedChat }) {
           ) } */}
       {/* 새 대화가 시작되지 않았으면 화면 가운데에 ChatGPT 글자 띄우기 */}
       <layout.FlexColumnCenterRow>
-        <style.CreditContainer credit={credit}>남은횟수 : {credit}</style.CreditContainer>
+        <style.CreditContainer credit={credit}>remain credit : {credit}</style.CreditContainer>
         <MainTextInput focusedChat={focusedChat} handleSubmit={handleSubmit} />
         <p
           style={{

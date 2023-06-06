@@ -133,11 +133,13 @@ export const CreditContainer = styled(layout.FlexCenter100)`
   bottom: 125px;
   z-index: 1;
   border: 1px solid #d9d9e3;
+  color: ${sVar.black50};
   background-color: white;
-  border-radius: 0.75rem;
+  border-radius: 0.35rem;
+  font-size: 0.75rem;
   ${(props) => {
     if (props.credit === 0) {
-      return `color: red;`;
+      return `color: ${sVar.loginHLColor90};`;
     }
   }}
 `;
