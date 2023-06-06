@@ -120,7 +120,7 @@ function Login() {
           {isEmailInsert ? <NameFloatInput name="password" changeHandler={changeHandler} value={password} /> : null}
           <GreenBtn size="Big">Continue</GreenBtn>
         </style.UserForm>
-        <p style={{ marginTop: "10px", fontSize: "0.9rem" }}>
+        <p style={{ marginTop: "10px", fontSize: "0.85rem" }}>
           Don't have an account?{" "}
           <Link to={"/signup"} style={{ color: `${sVar.loginHLColor90}`, textDecoration: "none", marginLeft: "5px" }}>
             Sign up

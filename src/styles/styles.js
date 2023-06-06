@@ -13,36 +13,40 @@ export const Heading = styled.div`
 export const UserForm = styled(layout.FlexColumnForm)`
   text-align: left;
   width: 320px;
-  > input {
-    border: 1px solid #c2c8d0;
-    box-sizing: border-box;
-    color: rgba(0, 0, 0, 0.7);
-    font-size: 16px;
-    font-weight: 400;
-    font-family: "Noto Sans KR", sans-serif;
-    width: inherit;
-    height: 52px;
-    padding: 0 16px;
-    margin-bottom: 16px;
-    border-radius: 4px;
-    transition: border 0.2s ease-in-out;
-    &:focus {
-      outline: none;
-      border: 1px solid ${sVar.loginHLColor90};
-    }
-  }
   > button {
     width: inherit;
     height: 52px;
   }
 `;
 
+export const LoginInput = styled.input`
+  border: 1px solid #c2c8d0;
+  box-sizing: border-box;
+  color: rgba(0, 0, 0, 0.7);
+  font-size: 16px;
+  font-weight: 400;
+  font-family: "Noto Sans KR", sans-serif;
+  width: inherit;
+  height: 52px;
+  padding: 0 16px;
+  margin-bottom: 16px;
+  border-radius: 4px;
+  transition: border 0.2s ease-in-out;
+  &:focus {
+    outline: none;
+    border: 1px solid ${sVar.loginHLColor70};
+  }
+`
+
 export const ConfirmPasswordFormDiv = styled(layout.FlexColumn100)`
   padding: 18px;
-  border: 1px solid black;
-  margin-top: 8px;
+  border: 1px solid #c2c8d0;;
+  margin-bottom: 20px;
   gap: 18px;
   border-radius: 4px;
+  > span, li {
+    font-size: 0.85rem;
+  }
 `;
 
 // 이하 메인 대화 화면에서 사용되는 styles

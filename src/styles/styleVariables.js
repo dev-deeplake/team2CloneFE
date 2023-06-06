@@ -31,6 +31,8 @@ export const lineColor = `rgba(232, 232, 232, 1)`;
 export const darkLineColor = `rgba(88, 88, 99, 1)`;
 export const groupTextColor = `rgba(142, 142, 160, 1)`;
 
+export const loginHLColor70 = `rgba(16, 163, 126, 0.7)`;
+export const loginHLColor80 = `rgba(16, 163, 126, 0.8)`;
 export const loginHLColor90 = `rgba(16, 163, 126, 0.9)`;
 export const loginHLColor100 = `rgba(16, 163, 126, 1)`;
 
