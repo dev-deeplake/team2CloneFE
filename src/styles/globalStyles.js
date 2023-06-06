@@ -63,6 +63,9 @@ const GlobalStyles = createGlobalStyle`
   font-family: "Courier New", Courier, monospace;
   margin-bottom: 20px;
   }
+  html {
+    overflow-y: overlay;
+  }
 `;
 
 export default GlobalStyles;

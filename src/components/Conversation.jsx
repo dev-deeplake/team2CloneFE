@@ -20,7 +20,7 @@ function Conversation({ isGPT, children }) {
         {isGPT === false && <div>{children}</div>}
         {isGPT === "loading" && (
           <div style={{ display: "flex", alignItems: "center" }}>
-            <style.Cursor>t</style.Cursor>
+            <style.Cursor>&nbsp;&nbsp;</style.Cursor>
           </div>
         )}
         {/* {!!isGPT && isGPT !== "loading" ? <div dangerouslySetInnerHTML={{ __html: marked(children) }} /> : <div>{children}</div>} */}

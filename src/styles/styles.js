@@ -86,7 +86,7 @@ export const MainHeader = styled(layout.FlexCenter100)`
 // main 화면의 대화 컨테이너 스타일링 - 대화가 있을 때
 export const MainConv = styled(layout.FlexColumnRowCenter100)`
   height: calc(100vh - (45px + 200px));
-  overflow-y: scroll;
+  overflow-y: auto;
 `;
 // main 화면의 컨테이너 스타일링 - 대화가 없을 때
 export const MainEmpty = styled(layout.FlexColumnCenter)`
@@ -302,6 +302,7 @@ export const SendContainer = styled.div`
 export const ConvContainer = styled(layout.FlexCenter100)`
   padding: 24px 0;
   border-bottom: 1px solid ${sVar.lineColor};
+
   ${(props) => {
     if (!!props.isGPT) {
       return `
