@@ -52,5 +52,7 @@ export const gptAPI = {
   getConvs: async (chatId) => await instance.get(`/chat/${chatId}`),
   makeChat: async (ask) => await instance.post("/chat", ask),
   continueChat: async (ask, chatId) => await instance.post(`chat/${chatId}`, ask),
+  modifyName: async (newChatName, chatId) => await instance.put(`/chat/${chatId}`, { newChatName }),
+  deleteChat: async (chatId) => await instance.delete(`/chat/${chatId}`)
 };
 export default instance;

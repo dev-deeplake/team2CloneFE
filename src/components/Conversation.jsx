@@ -14,7 +14,7 @@ function Conversation({ isGPT, children }) {
         {/* {!!isGPT && isGPT !== "loading" ? <GptIcon /> : <UserIcon width="30px" height="30px" font="9pt" email={decrypt(localStorage.getItem("USR"), cryptoKey).email} hex={localStorage.getItem("userHex")} />} */}
         {isGPT === true && <GptIcon />}
         {isGPT === "loading" && <Loading />}
-        {isGPT === false && <UserIcon width="30px" height="30px" font="9pt" email={decrypt(localStorage.getItem("USR"), cryptoKey).email} hex={localStorage.getItem("userHex")} />}
+        {isGPT === false && <UserIcon width="30px" height="30px" font="9pt" email={decrypt(localStorage.getItem("USR"), cryptoKey).email} hex={sessionStorage.getItem("userHex")} />}
         {/* { children } */}
         {isGPT === true && <div dangerouslySetInnerHTML={{ __html: marked(children, { headerIds: false, mangle: false }) }} />}
         {isGPT === false && <div>{children}</div>}

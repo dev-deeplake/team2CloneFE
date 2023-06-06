@@ -24,7 +24,7 @@ function Layout() {
 
   // /api/chat으로의 get 요청 처리 및 해당 요청의 결과를 state로 관리하여 렌더링하는 파트 시작
   const [listResponse, setListResponse] = useState(false);
-  const userHex = localStorage.getItem("userHex") ? localStorage.getItem("userHex") : localStorage.setItem("userHex", getHex());
+  const userHex = sessionStorage.getItem("userHex") ? sessionStorage.getItem("userHex") : sessionStorage.setItem("userHex", getHex());
   const queryClient = useQueryClient();
   const {
     data: chats,
@@ -58,12 +58,26 @@ function Layout() {
 
   // /api/chat으로 post 요청을 보내 새로운 대화를 생성하고, 새로운 대화가 생성된 후 받아오는 response를 통해 chatId state 관리 및 응답 추출 관련 파트
 
-  // focusedChat: 어떤 대화방이 focused 되어있는지 보여주는 state
+  // focusedChat: 어떤 Id의 대화방이 focused 되어있는지 보여주는 state, true / false가 아닌 chatId가 들어감.
   const [focusedChat, setFocusedChat] = useState(null);
+
+  // 클릭된 채팅방에 따라 focusedChat의 id를 바꿔주는 함수
   const navOnClickHandler = (event) => {
-    setFocusedChat(event.target.id);
-    console.log(event.target.id);
+    event.stopPropagation()
+    // console.log(event.currentTarget.name)
+    // console.log(event.currentTarget.id)
+    // console.log(event.currentTarget)
+    setFocusedChat(event.currentTarget.id)
   };
+  // const navOnClickHandler = (event) => {
+  //   event.stopPropagation()
+  //   setFocusedChat(event.currentTarget.id)
+  //   if (event.currentTarget.id == focusedChat && !isFocused) {
+  //     setIsFocused(true)
+  //   } else if (event.currentTarget.id != focusedChat && !!isFocused) {
+  //     setIsFocused(false)
+  //   }
+  // }
 
   const makeChatMutation = useMutation(gptAPI.makeChat, {
     onSuccess: (res) => {
@@ -100,9 +114,6 @@ function Layout() {
       queryClient.invalidateQueries(["conversation", focusedChat]);
     },
   });
-  if (contChatMutation.isLoading) {
-    // 로딩중일때 loader icon 띄우기
-  }
 
   const handleNewSubmit = async (inputValue) => {
     const reqBody = { ask: inputValue }; // 질문을 서버로 보내기 위한 요청 본문
@@ -144,7 +155,7 @@ function Layout() {
     <>
       {!!chats ? (
         <layout.Flex100>
-          <Nav newChatOnClick={newChatClickHandler} navOnClick={navOnClickHandler} focusedChat={focusedChat} email={email} hex={userHex} chats={chats} />
+          <Nav focusedSetter={setFocusedChat} newChatOnClick={newChatClickHandler} navOnClick={navOnClickHandler} focusedChat={focusedChat} email={email} hex={userHex} chats={chats} />
           <Main focusedChat={focusedChat} handleSubmit={focusedChat === null ? handleNewSubmit : handleReplSubmit} />
         </layout.Flex100>
       ) : (
