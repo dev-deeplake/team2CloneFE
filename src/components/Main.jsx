@@ -4,12 +4,13 @@ import * as style from "../styles/styles";
 import * as sVar from "../styles/styleVariables";
 import { ReactComponent as Power } from "../icons/power.svg";
 import MainTextInput from "./MainTextInput";
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import { gptAPI, userAPI } from "../axios/api";
 import Conversation from "./Conversation";
 import zIndex from "@mui/material/styles/zIndex";
 
 function Main({ handleSubmit, focusedChat }) {
+  const queryClient = useQueryClient();
   // focusedChat에 데이터가 있을 때 대화내용 조회 API (/api/chat/:chatId)를 통해 conversation을 받아와 띄워주기
   const {
     data: conv,
@@ -25,9 +26,13 @@ function Main({ handleSubmit, focusedChat }) {
     {
       enabled: !!focusedChat,
       // refetchInterval: 2000,
+      refetchOnWindowFocus: false,
       refetchInterval: (data) => {
         // 마지막 대화 객체의 isGPT가 true이면 다시 가져오지 않기
         return data && data[data.length - 1].isGPT ? false : 2000;
+      },
+      onSuccess: () => {
+        queryClient.invalidateQueries(["credit"]);
       },
     }
   );
@@ -37,6 +42,7 @@ function Main({ handleSubmit, focusedChat }) {
       console.log("credit is", res);
     },
     refetchOnWindowFocus: false,
+    // refetchInterval: 1000,
     select: (data) => data.data.data.mycredit,
   });
 

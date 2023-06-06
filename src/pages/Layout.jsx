@@ -69,7 +69,7 @@ function Layout() {
     onSuccess: (res) => {
       console.log("makeChatMutationRes", res);
       queryClient.invalidateQueries(["chat"]);
-      queryClient.invalidateQueries(["credit"]);
+      // queryClient.invalidateQueries(["credit"]);
     },
     onError: (err) => {
       console.log("makeChatMutation error:", err);
@@ -86,7 +86,7 @@ function Layout() {
     onSuccess: (res) => {
       console.log(`contChatMutationRes:::`, res);
       queryClient.invalidateQueries(["conversation"]);
-      queryClient.invalidateQueries(["credit"]);
+      // queryClient.invalidateQueries(["credit"]);
     },
     onError: (err) => {
       // 에러가 발생하면 해당 채팅방의 데이터를 새로 가져오도록 함

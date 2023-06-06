@@ -20,7 +20,7 @@ function Login() {
   const defaultEmail = !!localStorage.getItem("USR") ? decrypt(localStorage.getItem("USR"), cryptoKey).email : "";
   const defaultPassword = !!localStorage.getItem("USR") ? decrypt(localStorage.getItem("USR"), cryptoKey).password : "";
 
-  const [email, setEmail] = useState(defaultEmail); // 읽기 & 쓰기 모두 됨
+  const [email, setEmail] = useState(defaultEmail);
   const [password, setPassword] = useState(defaultPassword);
 
   const setCookieExpireDay = (day) => {
@@ -65,7 +65,7 @@ function Login() {
     }
   };
 
-  const postUserInfoForSignUp = (event) => {
+  const postUserInfoForLogin = (event) => {
     event.preventDefault();
     isEmailInsert ? checkUserPassword() : checkUserEmail();
   };
@@ -82,10 +82,21 @@ function Login() {
     setIsEmailInsert(true);
   };
 
+  const canWriteEmail = (event) => {
+    setIsEmailInsert(false);
+  };
+
   const checkUserPassword = () => {
     const passwordFormList = /[~!@#$%^&*()_+|<>?:{}]/;
     if (password && passwordFormList.test(password)) {
       loginMutation({ email, password });
+    }
+  };
+
+  const enterKey = (event) => {
+    if (event.keyCode === 13) {
+      event.preventDefault();
+      isEmailInsert ? checkUserPassword() : checkUserEmail();
     }
   };
 
@@ -104,9 +115,9 @@ function Login() {
         <layout.FlexColumnCenter style={{ padding: "40px 40px 24px 40px", width: "400px", height: "136px", justifyContent: "space-between" }}>
           <LoginHeader style={{ color: `${sVar.black80}` }}>Welcome back</LoginHeader>
         </layout.FlexColumnCenter>
-        <style.UserForm onSubmit={postUserInfoForSignUp}>
-          <NameFloatInput name="email" type="email" changeHandler={changeHandler} value={email} isEmailInsert={isEmailInsert} />
-          {isEmailInsert ? <NameFloatInput name="password" type="password" changeHandler={changeHandler} value={password} /> : null}
+        <style.UserForm onSubmit={postUserInfoForLogin} onKeyDown={enterKey}>
+          <NameFloatInput name="email" changeHandler={changeHandler} value={email} isEmailInsert={isEmailInsert} canWriteEmail={canWriteEmail} />
+          {isEmailInsert ? <NameFloatInput name="password" changeHandler={changeHandler} value={password} /> : null}
           <GreenBtn size="Big">Continue</GreenBtn>
         </style.UserForm>
         <p style={{ marginTop: "10px", fontSize: "0.9rem" }}>

@@ -21,12 +21,15 @@ function SignUp() {
   const [isPasswordCheck, setIsPasswordCheck] = useState(false);
 
   const { mutateAsync: signUpMutation } = useMutation((userInfo) => userAPI.signUp(userInfo), {
-    onSuccess: async (res) => {
+    onSuccess: (res) => {
       console.log(res);
       alert("성공적으로 회원가입되었습니다..");
       localStorage.setItem("USR", encrypt({ email, password }, cryptoKey));
       document.cookie = "Authorization =; expires=Thu, 01 Jan 1970 00:00:01 GMT; ";
       navigate("/login");
+    },
+    onError: (err) => {
+      alert(err.response.data.message);
     },
   });
 
@@ -50,8 +53,19 @@ function SignUp() {
     }
   };
 
+  const checkUserPassword = () => {
+    const passwordFormList = /[~!@#$%^&*()_+|<>?:{}]/;
+    if (password && passwordFormList.test(password)) {
+      signUpMutation({ email, password });
+    }
+  };
+
   const postUserInfoForSignUp = (event) => {
     event.preventDefault();
+    isEmailInsert ? checkUserPassword() : checkUserEmail();
+  };
+
+  const checkUserEmail = (event) => {
     // 이메일 허용 양식
     const emailFormList = ["naver.com", "gmail.com", "hanmail.net", "kakao.com"];
     // 입력한 이메일이 허용 양식 중에 있는지 확인
@@ -61,14 +75,29 @@ function SignUp() {
     if (boolCheckEmailForm) {
       return alert(
         `올바른 이메일 형태가 아닙니다. 
-이메일은 다음과 같은 도메인 중 하나를 사용해야 합니다.
-${emailFormList}`
+  이메일은 다음과 같은 도메인 중 하나를 사용해야 합니다.
+  ${emailFormList}`
       );
     }
     setIsEmailInsert(true);
     // pw 값 존재 시 회원가입 HTTP통신 진행
+    if (password.length >= 1) {
+      setIsClickPasswordInput(true);
+    }
     if (password && passwordFormList.test(password)) {
-      signUpMutation({ email, password });
+      setIsPasswordCheck(true);
+    }
+  };
+
+  const canWriteEmail = () => {
+    setIsEmailInsert(false);
+    setIsClickPasswordInput(false);
+  };
+
+  const enterKey = (event) => {
+    if (event.keyCode === 13) {
+      event.preventDefault();
+      isEmailInsert ? checkUserPassword() : checkUserEmail();
     }
   };
 
@@ -100,8 +129,8 @@ ${emailFormList}`
             Please note that phone verification is required for signup. Your number will only be used to verify your identity for security purposes.
           </div>
         </layout.FlexColumnCenter>
-        <style.UserForm onSubmit={postUserInfoForSignUp}>
-          <NameFloatInput name="email" type="email" changeHandler={changeHandler} value={email} isEmailInsert={isEmailInsert} />
+        <style.UserForm onSubmit={postUserInfoForSignUp} onKeyDown={enterKey}>
+          <NameFloatInput name="email" type="email" changeHandler={changeHandler} value={email} isEmailInsert={isEmailInsert} canWriteEmail={canWriteEmail} />
           {isEmailInsert ? <NameFloatInput name="password" type="password" changeHandler={changeHandler} value={password} /> : null}
           {isClickPasswordInput ? (
             <style.ConfirmPasswordFormDiv>
