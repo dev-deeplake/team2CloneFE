@@ -20,6 +20,7 @@ export const black90 = `rgba(0, 0, 0, 0.9)`;
 export const black80 = `rgba(0, 0, 0, 0.8)`;
 export const black70 = `rgba(0, 0, 0, 0.7)`;
 export const black60 = `rgba(0, 0, 0, 0.6)`;
+export const black50 = `rgba(0, 0, 0, 0.5)`;
 export const black40 = `rgba(0, 0, 0, 0.4)`;
 export const black20 = `rgba(0, 0, 0, 0.2)`;
 export const black10 = `rgba(0, 0, 0, 0.1)`;
@@ -30,6 +31,8 @@ export const lineColor = `rgba(232, 232, 232, 1)`;
 export const darkLineColor = `rgba(88, 88, 99, 1)`;
 export const groupTextColor = `rgba(142, 142, 160, 1)`;
 
+export const loginHLColor70 = `rgba(16, 163, 126, 0.7)`;
+export const loginHLColor80 = `rgba(16, 163, 126, 0.8)`;
 export const loginHLColor90 = `rgba(16, 163, 126, 0.9)`;
 export const loginHLColor100 = `rgba(16, 163, 126, 1)`;
 

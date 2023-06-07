@@ -13,36 +13,40 @@ export const Heading = styled.div`
 export const UserForm = styled(layout.FlexColumnForm)`
   text-align: left;
   width: 320px;
-  > input {
-    border: 1px solid #c2c8d0;
-    box-sizing: border-box;
-    color: rgba(0, 0, 0, 0.7);
-    font-size: 16px;
-    font-weight: 400;
-    font-family: "Noto Sans KR", sans-serif;
-    width: inherit;
-    height: 52px;
-    padding: 0 16px;
-    margin-bottom: 16px;
-    border-radius: 4px;
-    transition: border 0.2s ease-in-out;
-    &:focus {
-      outline: none;
-      border: 1px solid ${sVar.loginHLColor90};
-    }
-  }
   > button {
     width: inherit;
     height: 52px;
   }
 `;
 
+export const LoginInput = styled.input`
+  border: 1px solid #c2c8d0;
+  box-sizing: border-box;
+  color: rgba(0, 0, 0, 0.7);
+  font-size: 16px;
+  font-weight: 400;
+  font-family: "Noto Sans KR", sans-serif;
+  width: inherit;
+  height: 52px;
+  padding: 0 16px;
+  margin-bottom: 16px;
+  border-radius: 4px;
+  transition: border 0.2s ease-in-out;
+  &:focus {
+    outline: none;
+    border: 1px solid ${sVar.loginHLColor70};
+  }
+`
+
 export const ConfirmPasswordFormDiv = styled(layout.FlexColumn100)`
   padding: 18px;
-  border: 1px solid black;
-  margin-top: 8px;
+  border: 1px solid #c2c8d0;;
+  margin-bottom: 20px;
   gap: 18px;
   border-radius: 4px;
+  > span, li {
+    font-size: 0.85rem;
+  }
 `;
 
 // 이하 메인 대화 화면에서 사용되는 styles
@@ -82,7 +86,7 @@ export const MainHeader = styled(layout.FlexCenter100)`
 // main 화면의 대화 컨테이너 스타일링 - 대화가 있을 때
 export const MainConv = styled(layout.FlexColumnRowCenter100)`
   height: calc(100vh - (45px + 200px));
-  overflow-y: scroll;
+  overflow-y: auto;
 `;
 // main 화면의 컨테이너 스타일링 - 대화가 없을 때
 export const MainEmpty = styled(layout.FlexColumnCenter)`
@@ -106,6 +110,8 @@ export const MainFooter = styled(layout.FlexColumnCenterRow)`
 `;
 // main 화면 아래쪽의 inputarea 스타일링
 export const MainInputContainer = styled(layout.FlexCenterRow100)`
+  display: flex;
+  align-items: flex-end;
   background: white;
   max-width: 672px;
   width: 100%;
@@ -116,7 +122,7 @@ export const MainInputContainer = styled(layout.FlexCenterRow100)`
   box-shadow: 0 0 15px ${sVar.black10};
   position: fixed;
   bottom: 52px;
-  padding: 1rem 0 1rem 1rem;
+  padding: 0.8rem 0 0.8rem 0.9rem;
   flex-grow: 1;
   z-index: 1;
   &:after,
@@ -127,39 +133,57 @@ export const MainInputContainer = styled(layout.FlexCenterRow100)`
 `;
 
 export const CreditContainer = styled(layout.FlexCenter100)`
-  width: 150px;
+  width: 160px;
   height: 40px;
   position: fixed;
   bottom: 125px;
   z-index: 1;
   border: 1px solid #d9d9e3;
+  color: ${sVar.loginHLColor80};;
   background-color: white;
-  border-radius: 0.75rem;
+  border-radius: 0.35rem;
+  font-size: 0.75rem;
   ${(props) => {
     if (props.credit === 0) {
-      return `color: red;`;
+      return `color: ${sVar.black40};`;
     }
   }}
 `;
 
 export const MainInput = styled.textarea`
   /* box-sizing: border-box; */
+  resize: none;
   color: ${sVar.black80};
   display: flex;
   max-width: 654px;
   width: 100%;
   flex-wrap: wrap;
-  max-height: 200px;
-  height: 24px;
-  overflow-y: hidden;
-  padding-right: 3rem;
-  padding-left: 0;
+  max-height: 120px;
+  min-height: 24px;
+  overflow-y: auto;
+  padding-left: 0.1rem;
   /* background-color: transparent; */
   resize: none;
   line-height: 1.5em;
   border-width: 0;
   font-family: inherit;
   font-size: 0.9rem;
+  /* 스크롤바 스타일 지정 */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: transparent; 
+  }
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: transparent; 
+  }
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: transparent; 
+  }
   &:after,
   &:before {
     border: 0 solid #d9d9e3;
@@ -173,7 +197,14 @@ export const MainInput = styled.textarea`
   }
   ${(props) => {
     if (!!props.height) {
-      return `height: ${props.height};`;
+      if (parseInt(props.height > 120)) {
+        return `
+          overflow-y: scroll
+        `
+      } else {
+        return `height: ${props.height};`;
+      }
+      
     }
   }}
 `;
@@ -253,6 +284,7 @@ export const LogoutMenu = styled(IconUsingBtn)`
 
 // send icon container 스타일링
 export const SendContainer = styled.div`
+  display: flex;
   margin: 0 20px 0 10px;
   padding: 6px;
   border-radius: 6px;
@@ -263,6 +295,12 @@ export const SendContainer = styled.div`
       // return `background: #19C37D;`
       return `background: ${props.iconColor};`;
     }
+    if (!!props.disabled) {
+      return `
+        background: ${sVar.black20};
+        cursor: not-allowed;
+      `
+    }
   }}
 `;
 
@@ -270,6 +308,7 @@ export const SendContainer = styled.div`
 export const ConvContainer = styled(layout.FlexCenter100)`
   padding: 24px 0;
   border-bottom: 1px solid ${sVar.lineColor};
+
   ${(props) => {
     if (!!props.isGPT) {
       return `

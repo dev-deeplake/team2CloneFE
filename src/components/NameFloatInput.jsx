@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import * as layout from "../styles/layouts";
 import { ReactComponent as Eyes } from "../icons/eyes.svg";
 import { ReactComponent as NoEyes } from "../icons/noeyes.svg";
+import * as sVar from "../styles/styleVariables";
+import * as style from "../styles/styles";
 
 function NameFloatInput({ name, changeHandler, value, isEmailInsert = false, canWriteEmail = false }) {
   const [isFocus, setIsFocus] = useState(false);
@@ -21,7 +23,7 @@ function NameFloatInput({ name, changeHandler, value, isEmailInsert = false, can
     setShowPassword(!showPassword);
   };
 
-  const borderColor = isFocus && "green";
+  const borderColor = isFocus && `${sVar.loginHLColor70}`;
   const type = showPassword ? "text" : "password";
 
   return name === "email" ? (
@@ -33,7 +35,7 @@ function NameFloatInput({ name, changeHandler, value, isEmailInsert = false, can
         </FuncBtn>
       </layout.FlexCenterRow100SpaceBetween>
     ) : (
-      <input autoFocus style={{ width: "100%" }} name={name} required onChange={changeHandler} autoComplete="off" type="email" value={value} />
+      <style.LoginInput autoFocus style={{ width: "100%" }} name={name} required onChange={changeHandler} autoComplete="off" type="email" value={value} />
     )
   ) : (
     <layout.FlexCenterRow100SpaceBetween borderColor={borderColor}>
@@ -53,7 +55,7 @@ function FuncBtn({ children, name, onClick = false, showPassword = false }) {
         event.preventDefault();
         onClickHandler();
       }}
-      style={{ backgroundColor: "white", border: "none", height: "100%", color: name === "email" && "green" }}
+      style={{ backgroundColor: "white", border: "none", height: "100%", color: name === "email" && `${sVar.loginHLColor90}` }}
     >
       {children}
     </button>
