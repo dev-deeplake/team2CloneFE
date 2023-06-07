@@ -6,15 +6,20 @@ import * as sVar from "../styles/styleVariables";
 import * as style from "../styles/styles";
 
 function NameFloatInput({ name, changeHandler, value, isEmailInsert = false, canWriteEmail = false }) {
+  // div focus 시 보더 변경을 위한 state
   const [isFocus, setIsFocus] = useState(false);
+  // password 보여주는 옵션을 위한 state
   const [showPassword, setShowPassword] = useState(false);
 
+  // name(email or password)에 따라 아이콘 변경
   const icon = name === "password" ? showPassword ? <NoEyes /> : <Eyes /> : "Edit";
 
+  // focus 시 border 초록색으로 설정
   const changeBorderToGreen = () => {
     setIsFocus(true);
   };
 
+  // blur 시 border Default 색상으로 변경
   const changeBorderToDefault = () => {
     setIsFocus(false);
   };
@@ -47,6 +52,7 @@ function NameFloatInput({ name, changeHandler, value, isEmailInsert = false, can
   );
 }
 
+// NameFloatInput component 안에서만 사용할 버튼 컴포넌트 생성
 function FuncBtn({ children, name, onClick = false, showPassword = false }) {
   const onClickHandler = name === "email" ? onClick : showPassword;
   return (

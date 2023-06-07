@@ -15,14 +15,16 @@ import { cryptoKey, encrypt, decrypt } from "../util/crypto";
 function Login() {
   const navigate = useNavigate();
 
+  // 이메일 입력됐는 지 확인하는 state
   const [isEmailInsert, setIsEmailInsert] = useState(false);
 
+  // 자동완성 기능 - 로그인 페이지 접속 시 로컬스토리지에 유저정보가 있다면 해당 값으로 기본 값 설정
   const defaultEmail = !!localStorage.getItem("USR") ? decrypt(localStorage.getItem("USR"), cryptoKey).email : "";
   const defaultPassword = !!localStorage.getItem("USR") ? decrypt(localStorage.getItem("USR"), cryptoKey).password : "";
-
   const [email, setEmail] = useState(defaultEmail);
   const [password, setPassword] = useState(defaultPassword);
 
+  // 쿠키 유효기간 설정 함수- Day기준
   const setCookieExpireDay = (day) => {
     let expireDay = new Date();
     expireDay.setHours(expireDay.getHours() + day * 24 + 9);
@@ -30,6 +32,11 @@ function Login() {
   };
 
   const { mutateAsync: loginMutation } = useMutation((userInfo) => userAPI.login(userInfo), {
+    // 로그인 성공 시
+    // 1. 쿠키 저장 - 유효기간 1일
+    // 2. 로컬스토리지에 유저정보 암호화하여 저장
+    // 3. 로그인여부 확인 - 세션스토리지에 로그인 저장, 로그아웃 삭제
+    // 4. 메인페이지로 이동
     onSuccess: (res) => {
       setCookie("Authorization", res.data["data"].Authorization, {
         path: "/", // '/'설정시 : 모든 하위 도메인에서 쿠키 사용 가능 ex) domain: naver.com => 하위 domain : news.naver.com
@@ -46,6 +53,7 @@ function Login() {
       alert(res.data["message"]);
       navigate("/");
     },
+    // 로그인 실패 시 알람 띄우기
     onError: (err) => {
       alert(err.response.data.message);
     },
@@ -67,9 +75,11 @@ function Login() {
 
   const postUserInfoForLogin = (event) => {
     event.preventDefault();
-    isEmailInsert ? checkUserPassword() : checkUserEmail();
+    isEmailInsert ? loginMutation({ email, password }) : checkUserEmail();
   };
 
+  // 이메일이 올바른 형식이 아니면 알람 띄움
+  // 비밀 번호의 경우 잘 못 보낼 시 서버에서 주는 error 메시지 알람주는 형태
   const checkUserEmail = () => {
     // 이메일 허용 양식
     const emailFormList = ["naver.com", "gmail.com", "hanmail.net", "kakao.com"];
@@ -86,20 +96,14 @@ function Login() {
     setIsEmailInsert(false);
   };
 
-  const checkUserPassword = () => {
-    const passwordFormList = /[~!@#$%^&*()_+|<>?:{}]/;
-    if (password && passwordFormList.test(password)) {
-      loginMutation({ email, password });
-    }
-  };
-
   const enterKey = (event) => {
     if (event.keyCode === 13) {
       event.preventDefault();
-      isEmailInsert ? checkUserPassword() : checkUserEmail();
+      isEmailInsert ? loginMutation({ email, password }) : checkUserEmail();
     }
   };
 
+  // 로그인 성공 시 로그인페이지 접속 못하도록 설정
   useEffect(() => {
     if (sessionStorage.getItem("Login")) {
       navigate("/");
