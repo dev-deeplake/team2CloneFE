@@ -75,6 +75,9 @@ function SignUp() {
     const passwordFormList = /[~!@#$%^&*()_+|<>?:{}]/;
     if (password && passwordFormList.test(password)) {
       signUpMutation({ email, password });
+    } else {
+      alert(`비밀번호 형태를 확인하세요.
+비밀번호는 적어도 1개의 특수문자를 포함해야 합니다.`);
     }
   };
 
