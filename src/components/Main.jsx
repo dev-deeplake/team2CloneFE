@@ -30,12 +30,14 @@ function Main({ handleSubmit, focusedChat }) {
         // 마지막 대화 객체의 isGPT가 true이면 다시 가져오지 않기
         return data && data[data.length - 1].isGPT ? false : 2000;
       },
+      // gpt로 부터 대답 받을 시 차감된 credit 다시 불러오도록 설정
       onSuccess: () => {
         queryClient.invalidateQueries(["credit"]);
       },
     }
   );
 
+  // credit 가져오는 부분
   const { data: credit } = useQuery(["credit"], userAPI.getCredit, {
     onSuccess: (res) => {
       console.log("credit is", res);
@@ -45,15 +47,14 @@ function Main({ handleSubmit, focusedChat }) {
     select: (data) => data.data.data.mycredit,
   });
 
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
   if (conv !== undefined) {
-    if (conv[conv.length-1].isGPT === false && !isLoading) {
-      setIsLoading(true)
-    } else if (conv[conv.length-1].isGPT === true && !!isLoading) {
-      setIsLoading(false)
+    if (conv[conv.length - 1].isGPT === false && !isLoading) {
+      setIsLoading(true);
+    } else if (conv[conv.length - 1].isGPT === true && !!isLoading) {
+      setIsLoading(false);
     }
   }
-
 
   return (
     <style.MainContainer>

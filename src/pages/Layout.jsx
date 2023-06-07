@@ -63,11 +63,11 @@ function Layout() {
 
   // 클릭된 채팅방에 따라 focusedChat의 id를 바꿔주는 함수
   const navOnClickHandler = (event) => {
-    event.stopPropagation()
+    event.stopPropagation();
     // console.log(event.currentTarget.name)
     // console.log(event.currentTarget.id)
     // console.log(event.currentTarget)
-    setFocusedChat(event.currentTarget.id)
+    setFocusedChat(event.currentTarget.id);
   };
   // const navOnClickHandler = (event) => {
   //   event.stopPropagation()
@@ -83,10 +83,10 @@ function Layout() {
     onSuccess: (res) => {
       console.log("makeChatMutationRes", res);
       queryClient.invalidateQueries(["chat"]);
-      // queryClient.invalidateQueries(["credit"]);
     },
     onError: (err) => {
       console.log("makeChatMutation error:", err);
+      // credit 관련 에러(credit 부족)일 경우 알람 표시
       if (err.response.status === 402) {
         alert(
           `사용가능한 횟수를 모두 소진하였습니다.
@@ -100,10 +100,10 @@ function Layout() {
     onSuccess: (res) => {
       console.log(`contChatMutationRes:::`, res);
       queryClient.invalidateQueries(["conversation"]);
-      // queryClient.invalidateQueries(["credit"]);
     },
     onError: (err) => {
       // 에러가 발생하면 해당 채팅방의 데이터를 새로 가져오도록 함
+      // credit 관련 에러(credit 부족)일 경우 알람 표시
       console.log("contChatMutation error:", err);
       if (err.response.status === 402) {
         alert(
@@ -143,7 +143,7 @@ function Layout() {
       chatId,
     });
     const reqAnswer = reqResponse.data;
-    console.log("Gpt answer:", reqAnswer);
+    console.log(reqAnswer);
   };
 
   // new Chat 버튼 클릭시 handler

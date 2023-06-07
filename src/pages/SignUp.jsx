@@ -15,12 +15,18 @@ function SignUp() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // 이메일이 올바르게 입력되면 true로 세팅됨
+  // 이메일 형식 확인용 state
   const [isEmailInsert, setIsEmailInsert] = useState(false);
-  const [isClickPasswordInput, setIsClickPasswordInput] = useState(false);
+  // 패스워드 형식 확인용 state
   const [isPasswordCheck, setIsPasswordCheck] = useState(false);
+  // 패스워드 입력 시 형식 안내 및 확인할 수 있는 박스 생성을 위한 state
+  const [isClickPasswordInput, setIsClickPasswordInput] = useState(false);
 
   const { mutateAsync: signUpMutation } = useMutation((userInfo) => userAPI.signUp(userInfo), {
+    //회원가입 성공
+    // 1. 이메일과 비밀번호 암호화하여 localStorage에 저장
+    // 2. 현재 저장되어 있는 쿠키 삭제
+    // 3. 로그인 페이지로 이동
     onSuccess: (res) => {
       console.log(res);
       alert("성공적으로 회원가입되었습니다..");
@@ -28,6 +34,8 @@ function SignUp() {
       document.cookie = "Authorization =; expires=Thu, 01 Jan 1970 00:00:01 GMT; ";
       navigate("/login");
     },
+    // 회원가입 실패
+    // 해당 내용 알람
     onError: (err) => {
       alert(err.response.data.message);
     },
@@ -41,11 +49,12 @@ function SignUp() {
         break;
       case "password":
         setPassword(value);
-        const passwordFormList = /[~!@#$%^&*()_+|<>?:{}]/;
+        // 비밀번호 입력 시 비밀번호 형식 및 확인할 수 있는 부분 띄우도록 설정
         if (value.length === 1) {
           setIsClickPasswordInput(true);
         }
-        // css상 마크 변경하는 부분 추가 필요
+        // 비밀번호 형식 체크
+        const passwordFormList = /[~!@#$%^&*()_+|<>?:{}]/;
         passwordFormList.test(value) ? setIsPasswordCheck(true) : setIsPasswordCheck(false);
         break;
       default:
@@ -53,6 +62,15 @@ function SignUp() {
     }
   };
 
+  // form 제출시
+  // 1. 이메일 입력 시 : 이메일 형식 확인
+  // 2. 비밀번호 입력 시 : 비밀번호 형식 확인
+  const postUserInfoForSignUp = (event) => {
+    event.preventDefault();
+    isEmailInsert ? checkUserPassword() : checkUserEmail();
+  };
+
+  // 비밀번호 형식 확인
   const checkUserPassword = () => {
     const passwordFormList = /[~!@#$%^&*()_+|<>?:{}]/;
     if (password && passwordFormList.test(password)) {
@@ -60,11 +78,7 @@ function SignUp() {
     }
   };
 
-  const postUserInfoForSignUp = (event) => {
-    event.preventDefault();
-    isEmailInsert ? checkUserPassword() : checkUserEmail();
-  };
-
+  // 이메일 형식 확인
   const checkUserEmail = (event) => {
     // 이메일 허용 양식
     const emailFormList = ["naver.com", "gmail.com", "hanmail.net", "kakao.com"];
@@ -80,7 +94,7 @@ function SignUp() {
       );
     }
     setIsEmailInsert(true);
-    // pw 값 존재 시 회원가입 HTTP통신 진행
+    // 이메일 수정기능 이용 시 이메일 형식확인 후 다시 비밀번호 형식 확인 박스 띄워줄 필요에 따라 추가
     if (password.length >= 1) {
       setIsClickPasswordInput(true);
     }
@@ -89,11 +103,13 @@ function SignUp() {
     }
   };
 
+  // Edit 버튼 클릭 시 이메일 수정가능하도록 설정
   const canWriteEmail = () => {
     setIsEmailInsert(false);
     setIsClickPasswordInput(false);
   };
 
+  // Enter키와 form 연결
   const enterKey = (event) => {
     if (event.keyCode === 13) {
       event.preventDefault();
@@ -101,6 +117,7 @@ function SignUp() {
     }
   };
 
+  // 로그인 한 상태에서 회원가입 페이지로 이동 시 메인 페이지로 자동 이동하도록 설정
   useEffect(() => {
     if (sessionStorage.getItem("Login")) {
       navigate("/");
