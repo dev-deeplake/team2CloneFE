@@ -5,6 +5,7 @@ const instance = axios.create({
   withCredentials: true,
   headers: {
     Authorization: null,
+    'Access-Control-Request-Headers': 'Cookie'
     // withCredentials: true,
     // "Content-Type": "application/json",
   },
